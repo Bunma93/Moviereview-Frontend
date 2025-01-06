@@ -26,8 +26,18 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn }) {
     navigate("/");
   };
 
+  useEffect(() => {
+    // สมมติว่า access token ถูกเก็บไว้ใน localStorage
+    const accessToken = localStorage.getItem('accessToken');
+    
+    if (accessToken) {
+      setIsLoggedIn(true); // ตั้งค่าเป็น true ถ้ามี access token
+    } else {
+      setIsLoggedIn(false); // ตั้งค่าเป็น false ถ้าไม่มี access token
+    }
+  }, []);
+
   const handleLoginLogoutClick = () => {
-    console.log("Leo", isLoggedIn);
     if (isLoggedIn) {
       handleLogout();
     } else {
@@ -51,8 +61,16 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn }) {
           <li>
             <Link to="/profile">Profile</Link>
           </li>
-          <li onClick={handleLoginLogoutClick}>
-            <span style={{ cursor: "pointer" }}>
+          <li onClick={handleLoginLogoutClick} className="Navbar-Login">
+          <span
+            style={{
+              cursor: "pointer",
+              color: "white",
+              fontSize: "24px",
+              marginLeft: "59px",
+              fontWeight: "regular",
+            }}
+          >
               {isLoggedIn ? "Logout" : "Login"}
             </span>
             <i className="fa-regular fa-user"></i>

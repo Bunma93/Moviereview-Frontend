@@ -1,4 +1,5 @@
 import axios from "axios";
+import localStorage from "../services/localStorageService";
 
 // สร้าง instance ของ axios
 const apiClient = axios.create({
@@ -9,7 +10,16 @@ const apiClient = axios.create({
 // Interceptor สำหรับ Request
 apiClient.interceptors.request.use(
     (config) => {
+        if (config.url.includes("/login") || config.url.includes("/register")) {
         console.log("Request Sent:", config);
+        return config;
+        }
+        const token = localStorage.getItem("token");
+        
+        //ถ้ามี token จะ Authorized ให้
+        if (token) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {

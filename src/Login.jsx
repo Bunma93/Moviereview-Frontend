@@ -40,18 +40,17 @@ const Login = ({ closeModal, setRole, setIsLoggedIn }) => {
       password: formData.password,
     };
     try {
-      console.log(typeof setIsLoggedIn);
-      // const response = await axios.post("/user/login", data, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
+      const response = await axios.post("/user/login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       // ตรวจสอบว่า response.data มีค่าและมี token หรือไม่
-      if (true) {
+      if (response.status === 200) {
         setIsLoggedIn(true);
 
-        const token = "yay";
+        const token = response.data.token;
         localStorage.setItem("ACCESS_TOKEN", token); // เก็บ token ใน localStorage
         setRole("user"); // กำหนด role หลังจากล็อกอินสำเร็จ
         openNotificationWithIcon(

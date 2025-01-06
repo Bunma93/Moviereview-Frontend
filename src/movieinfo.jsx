@@ -54,7 +54,7 @@ function Movieinfo() {
     };
    const deletePlaylist = async (id) => {
         console.log(id);
-        await axios.delete(`/movie/${id}`);
+        await axios.delete(`/comment/${id}`);
         fetchComment();
         // const newPlaylist = [...playlist];
         // const targetIndex = newPlaylist.findIndex(playlist => playlist.id === id);
@@ -105,7 +105,7 @@ function Movieinfo() {
                         <h1>Reviews</h1>
                         <button onClick={togglePopup}>+ Add Your Review</button>
                     </div>
-                    {/* {isOpen && ( */}
+                    {isOpen && (
                     <div className="popup-overlay" onClick={togglePopup}>
                         <div className="popup-content" onClick={e => e.stopPropagation()}>
                             <div>ชื่อ</div>
