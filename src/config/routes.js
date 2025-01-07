@@ -35,7 +35,7 @@ export default {
           components.homepage, // หน้าหลัก
           components.login
         ],
-        redirectRoutes: "/login", // หากเส้นทางไม่ตรงจะ Redirect มาหน้านี้
+        redirectRoutes: "/", // หากเส้นทางไม่ตรงจะ Redirect มาหน้านี้
       },
     user: {
       allowedRoutes: [

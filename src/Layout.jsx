@@ -5,9 +5,8 @@ import Login from './Login';
 import localStorage from "./services/localStorageService";
 import { useNavigate } from 'react-router-dom'; // เพิ่มการนำเข้า useNavigate
 
-function Layout({setRole}) {
+function Layout({setRole, isLoggedIn, setIsLoggedIn}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // สถานะล็อกอิน
     const navigate = useNavigate(); // ประกาศ useNavigate เพื่อใช้งาน
 
     useEffect(() => {
