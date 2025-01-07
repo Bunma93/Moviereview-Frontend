@@ -1,18 +1,33 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import "./profile.scss"
 import Playlist from "./component/profile/profile-playlist";
 import Review from "./component/profile/profile-review";
+import axios from "./config/axios";
 import { Link } from 'react-router-dom';
+import { Avatar, Space } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 function Profile() {
+    const [userProfile, setUserProfile] = useState([]);
+    
+    //ดึงข้อมูลหนังทั้งหมด
+    const fetchUserProfile = async () => {
+        const httpResponse = await axios.get("/user/profile");
+        setUserProfile(httpResponse.data);
+    };
+
+    useEffect(() => {
+        fetchUserProfile();
+    },[]);
     return (
         <div>
             <div className="coverPage-Profile">
-                <img src="#" />
+                <img src="userProfile.posterimagePath" />
+
             </div>
             <div>
-                <img src="#" />
-                <div>name</div>
+                <Avatar size={200} icon={<UserOutlined />}/>
+                <div>dd{userProfile.name}</div>
             </div>
             <div>
                 <div>followed 1700</div>

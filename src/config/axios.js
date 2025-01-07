@@ -16,10 +16,12 @@ apiClient.interceptors.request.use(
         return config;
         }
         const token = localStorage.getItem("token");
-
+        
+        //ถ้ามี token จะ Authorized ให้
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
+        return config;
     },
     (error) => {
         console.error("Request Error:", error);
