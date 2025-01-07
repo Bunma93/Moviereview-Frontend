@@ -19,6 +19,9 @@ function Profile() {
     useEffect(() => {
         fetchUserProfile();
     },[]);
+
+    const imageUrl = `http://localhost:8000/${userProfile.userimagePath}`;
+
     return (
         <div>
             <div className="coverPage-Profile">
@@ -26,8 +29,8 @@ function Profile() {
 
             </div>
             <div>
-                <Avatar size={200} icon={<UserOutlined />}/>
-                <div>dd{userProfile.name}</div>
+                <Avatar size={200} icon={<UserOutlined />} src={imageUrl}/>
+                <div>{userProfile.name}</div>
             </div>
             <div>
                 <div>followed 1700</div>

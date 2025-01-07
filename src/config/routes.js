@@ -24,7 +24,7 @@ const components = {
     login : {
         url: "/login",
         component: Login
-    }
+    },
 }
 
 //Role ไหนเข้าหน้าไหนได้บ้าง
