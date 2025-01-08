@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import "./homepage.scss"
+import "./HomePage.scss"
 import { Link } from 'react-router-dom';
-import Movieposter from './component/movieposter';
-import Login from "./Login"
+import Movieposter from '../../component/movieposter';
+import Login from "../../Login"
 import axios from 'axios';
 
-function Homepage({isLoggedIn, setIsModalOpen}) {
+function HomePage({isLoggedIn, setIsModalOpen}) {
     const [movielist, setmovielist] = useState([]);
     
     //ดึงข้อมูลหนังทั้งหมด
@@ -87,4 +87,4 @@ function Homepage({isLoggedIn, setIsModalOpen}) {
     )
 }
 
-export default Homepage;
+export default HomePage;

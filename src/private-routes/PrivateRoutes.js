@@ -6,7 +6,7 @@ import Login from "../Login";
 
 function PrivateRoutes({ role = "guest", setRole }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [isRegisterMode, setIsRegisterMode] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false); // สถานะการเปิดโมดอล
   const allowedRoutes = ConfigRoutes[role]?.allowedRoutes || [];
   const redirectRoutes = ConfigRoutes[role]?.redirectRoutes || "/register"; // ค่า default ให้ redirect ไปยัง register

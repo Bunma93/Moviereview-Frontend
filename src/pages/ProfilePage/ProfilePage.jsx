@@ -1,13 +1,13 @@
 import {React, useState, useEffect} from "react";
-import "./profile.scss"
-import Playlist from "./component/profile/profile-playlist";
-import Review from "./component/profile/profile-review";
-import axios from "./config/axios";
+import "./ProfilePage.scss"
+import Playlist from "../../component/profile/profile-playlist";
+import Review from "../../component/profile/profile-review";
+import axios from "../../config/axios";
 import { Link } from 'react-router-dom';
 import { Avatar, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-function Profile() {
+function ProfilePage() {
     const [userProfile, setUserProfile] = useState([]);
     
     //ดึงข้อมูลหนังทั้งหมด
@@ -62,4 +62,4 @@ function Profile() {
     )
 }
 
-export default Profile;
+export default ProfilePage;

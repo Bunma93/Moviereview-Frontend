@@ -1,13 +1,13 @@
-import Homepage from "../homepage";
-import Movieinfo from "../movieinfo";
-import Profile from "../profile";
+import HomePage from "../pages/HomePage/HomePage";
+import MovieInfoPage from "../pages/MovieInfoPage/MovieInfoPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import RegisterForm from "../RegisterForm";
 import Login from "../Login";
 
 const components = {
     homepage: {
         url: "/",
-        component: Homepage
+        component: HomePage
     },
     register: {
         url: "/register",
@@ -15,11 +15,11 @@ const components = {
     },
     profile: {
         url: "/profile",
-        component: Profile
+        component: ProfilePage
     },
     movieinfo : {
         url: "/movieinfo",
-        component: Movieinfo
+        component:  MovieInfoPage
     },
     login : {
         url: "/login",

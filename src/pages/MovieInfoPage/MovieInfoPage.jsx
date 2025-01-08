@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import "./movieinfo.scss"
-import Movieactor from "./component/movieinfo-actor";
-import CommentCard from "./Comment";
+import "./MovieInfoPage.scss"
+import Movieactor from "../../component/movieinfo-actor";
+import CommentCard from "../../Comment";
 import _ from "lodash";
-import axios from "./config/axios";
+import axios from "../../config/axios";
 
-function Movieinfo() {
+function MovieInfoPage() {
     const [isOpen, setIsOpen] = useState(false);
 
     const togglePopup = () => {
@@ -174,4 +174,4 @@ function Movieinfo() {
     )
 }
 
-export default Movieinfo;
+export default MovieInfoPage;
