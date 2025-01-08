@@ -7,12 +7,11 @@ import localStorageService from './services/localStorageService';
 
 function App() {
   const [role, setRole] = useState(localStorageService.getRole());
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // สถานะล็อกอิน
   
   return (
     <div className="App">
         <Router>
-          <PrivateRoutes role={role} setRole={setRole} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+          <PrivateRoutes role={role} setRole={setRole}/>
         </Router>
     </div>
   );

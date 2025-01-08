@@ -5,7 +5,7 @@ import Movieposter from './component/movieposter';
 import Login from "./Login"
 import axios from 'axios';
 
-function Homepage() {
+function Homepage({isLoggedIn, setIsModalOpen}) {
     const [movielist, setmovielist] = useState([]);
     
     //ดึงข้อมูลหนังทั้งหมด
@@ -14,8 +14,13 @@ function Homepage() {
         setmovielist(httpResponse.data);
     };
 
+    const openModal = () => setIsModalOpen(true);
+
     useEffect(() => {
         fetchmovielist();
+        if (isLoggedIn === false) {
+            openModal();
+        }
     },[]);
 
     return (

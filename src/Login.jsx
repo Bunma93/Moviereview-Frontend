@@ -5,7 +5,7 @@ import { notification } from "antd";
 import localStorage from "./services/localStorageService";
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
 
-const Login = ({ closeModal, setRole, setIsLoggedIn }) => {
+const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -30,6 +30,10 @@ const Login = ({ closeModal, setRole, setIsLoggedIn }) => {
 
   const handleClose = () => {
     if (closeModal) closeModal();
+  };
+
+  const switchToRegister = () => {
+    setIsRegisterMode(false); // เปลี่ยนเป็นโหมด Register
   };
 
   const handleSubmit = async (e) => {
@@ -111,9 +115,9 @@ const Login = ({ closeModal, setRole, setIsLoggedIn }) => {
             <button type="submit" disabled={loading} onClick={handleSubmit}>
               {loading ? "Loading..." : "Login"}
             </button>
-            <a href="/register" onClick={handleClose}>
-              Register
-            </a>
+            <button type="button" onClick={switchToRegister}>
+                Register
+            </button>
           </form>
         </div>
       </div>

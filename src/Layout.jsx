@@ -8,11 +8,11 @@ import {
   useLocation,
 } from "react-router-dom";
 import Login from "./Login";
+import RegisterForm from "./RegisterForm"
 import localStorage from "./services/localStorageService";
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
 
-function Layout({ setRole, isLoggedIn, setIsLoggedIn }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpen, isRegisterMode, setIsRegisterMode }) {
 
   const navigate = useNavigate();
 
@@ -82,7 +82,7 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn }) {
       <Outlet />
 
       {/* Login modal (only if isModalOpen == true) */}
-      {isModalOpen && (
+      {isModalOpen && (isRegisterMode ? ( 
         <Login
           closeModal={closeModal}
           setRole={setRole}
@@ -90,7 +90,9 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn }) {
             console.log("LAYOUT: setIsLoggedIn got called with", val);
             setIsLoggedIn(val);
           }}
-        />
+          setIsRegisterMode = {setIsRegisterMode}
+        />)
+      : ( <RegisterForm  closeModal={closeModal} setIsRegisterMode={setIsRegisterMode}/> ) 
       )}
     </div>
   );

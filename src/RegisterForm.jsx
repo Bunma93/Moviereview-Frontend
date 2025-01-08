@@ -4,7 +4,7 @@ import axios from './config/axios';
 import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterForm = ({ closeModal }) => {
+const RegisterForm = ({ closeModal , setIsRegisterMode}) => {
   const [formData, setFormData] = useState({
     username: '',
     name:'',
@@ -14,6 +14,11 @@ const RegisterForm = ({ closeModal }) => {
     age:'',
     userimagePath: null,
   });
+
+  const switchToLogin = () => {
+    setIsRegisterMode(true); // เปลี่ยนกลับเป็นโหมด Login
+  };
+
   const openNotification = (type, message, description) => {
     notification[type]({
       message: message,
@@ -125,7 +130,9 @@ const RegisterForm = ({ closeModal }) => {
                 accept="image/*"
               />
               <button type="submit">Register</button>
-              <a href='/login'>Login</a>
+              <button type="button" onClick={switchToLogin}>
+                Back to Login
+              </button>
             </form>
             </div>
         </div>
