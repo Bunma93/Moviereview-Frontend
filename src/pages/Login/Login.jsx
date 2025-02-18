@@ -1,27 +1,19 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Login.module.scss";
 import axios from "../../config/axios";
-import { notification } from "antd";
+import { notification, Form, Input, Button } from "antd";
 import localStorage from "../../services/localStorageService";
-import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode"; // ใช้ถอดรหัส JWT Token ที่ได้รับจาก Google
+import { useNavigate } from "react-router-dom";
+
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
 
 const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // ประกาศ useNavigate เพื่อใช้งาน
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const navigate = useNavigate();
 
   const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
@@ -30,64 +22,34 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
     });
   };
 
-  const handleSuccess = (response) => {
-    const token = response.credential; // รับ JWT Token ที่ได้จาก Google
-    const decoded = jwtDecode(token); // ถอดรหัส JWT Token
-
-    console.log("Google User:", decoded); // ดูข้อมูลผู้ใช้จาก Google
-
-    localStorage.setItem("ACCESS_TOKEN", token); // บันทึก token ลง localStorage
-    setIsLoggedIn(true); // อัพเดตสถานะการล็อกอิน
-    setRole("user"); // กำหนด role หลังจากล็อกอินสำเร็จ
-    openNotificationWithIcon(
-      "success",
-      "Login Success",
-      "You have successfully logged in!"
-    );
-    handleClose(); // ปิดโมดอล
-    // navigate("/profile"); // เปลี่ยนเส้นทางไปหน้าโปรไฟล์
-  };
-
-  const handleFailure = (error) => {
-    console.log("Google Login Failed:", error);
-  };
-
   const handleClose = () => {
     if (closeModal) closeModal();
   };
 
   const switchToRegister = () => {
-    setIsRegisterMode(false); // เปลี่ยนเป็นโหมด Register
+    setIsRegisterMode(false);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     setLoading(true);
-    const data = {
-      username: formData.username,
-      password: formData.password,
-    };
     try {
-      const response = await axios.post("/user/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await axios.post("/user/login", values, {
+        headers: { "Content-Type": "application/json" },
       });
 
-      // ตรวจสอบว่า response.data มีค่าและมี token หรือไม่
       if (response.status === 200) {
         setIsLoggedIn(true);
+        localStorage.setItem("ACCESS_TOKEN", response.data.token);
+        setRole("user");
 
-        const token = response.data.token;
-        localStorage.setItem("ACCESS_TOKEN", token); // เก็บ token ใน localStorage
-        setRole("user"); // กำหนด role หลังจากล็อกอินสำเร็จ
         openNotificationWithIcon(
           "success",
           "Login Success",
           "You have successfully logged in!"
         );
-        handleClose(); // ปิดโมดอล
-        navigate("/profile"); // เปลี่ยนเส้นทางไปหน้าโปรไฟล์
+
+        handleClose();
+        navigate("/profile");
       } else {
         openNotificationWithIcon(
           "error",
@@ -107,52 +69,44 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
     <div className={styles.modal_overlay} onClick={handleClose}>
       <div className={styles.modal_content} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modal_content_info}>
-          <div className={styles.modal_content_info_header}>Sign in account</div>
+          <div className={styles.modal_content_info_header}>Sign in Account</div>
           <div>ลงทะเบียนบัญชีของคุณ</div>
         </div>
         <div className={styles.modal_content_input}>
-          <form>
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              type="text"
+          <Form form={form} {...layout} onFinish={handleSubmit}>
+            <Form.Item
+              label={<label style={{ color: "white", fontSize:"16px" }}>ชื่อผุ้ใช้</label>}
               name="username"
-              placeholder="Enter your username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
+              rules={[{ required: true, message: "กรุณากรอกชื่อผู้ใช้งาน" }]}
+            >
+              <Input placeholder="Enter your username" />
+            </Form.Item>
 
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
+            <Form.Item
+              label={<label style={{ color: "white", fontSize:"16px" }}>รหัสผ่าน</label>}
               name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+              rules={[{ required: true, message: "กรุณากรอกรหัสผ่าน" }]}
+            >
+              <Input.Password placeholder="Enter your password" />
+            </Form.Item>
 
-            <button type="submit" disabled={loading} onClick={handleSubmit}>
-              {loading ? "Loading..." : "Login"}
-            </button><br></br>
+            <Form.Item>
+              <Button className={styles.LoginButton} type="primary" htmlType="submit" loading={loading} block>
+                {loading ? "Loading..." : "Login"}
+              </Button>
+            </Form.Item>
 
-            {/* <div> 
-              <h2>Login with Google</h2>
-              <GoogleLogin 
-                onSuccess={handleSuccess} 
-                onError={handleFailure}
-              />
-            </div> */}
-            <br></br>
-            <button type="button" onClick={switchToRegister}>
-                ยังไม่มีบัญชี
-            </button>
-          </form>
+            <Form.Item>
+              <Button className={styles.Registerlink} type="link" onClick={switchToRegister} block>
+                ยังไม่มีบัญชี? ลงทะเบียนที่นี่
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     </div>
   );
 };
+
 export default Login;
+

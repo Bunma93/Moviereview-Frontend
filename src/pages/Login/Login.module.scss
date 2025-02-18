@@ -1,39 +1,55 @@
 .modal_overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+// Animation ตอน Modal แสดงผล
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
   }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
   
 /* สไตล์สำหรับ modal content */
 .modal_content {
   display: flex;
   background: #0B0808;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 40px;
+  
+  border-radius: 12px;
   width: 750px;
-  height: 500px;
   max-width: 80%;
   text-align: center;
   position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-in-out;
   input {
-      width: 90%;
+      width: 100%;
       display: inline;
-      width: 60%;
+      // width: 60%;
   }
   &_info {
       display: flex;
       flex-direction: column;
       align-items: start;
       justify-items: flex-start;
-      flex: 1;
-      color:#07457c;
+      flex: 0.6;
+      color:#e9e9e9;
       &_header {
           font-size: 50px;
           font-weight: 700;
@@ -45,21 +61,29 @@
       }
   }
   &_input {
-      flex: 1;
-      color: #F0F8FF;
-      text-align: start;
+    flex: 1;
+    color: #F0F8FF;
+    flex-direction: column;
+    text-align: start;
   }
 }
 
-.modal_content button {
-  margin-top: 10px;
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-input {
-  color: #F0F8FF;
-  background-color: #1D2534;
-  padding: 7px 24px;
-  border-radius: 10px;
-  margin: 5px;
-  border: none;
+.LoginButton {
+  margin-top: 20px;
+  margin-left: 110px;
+}
+
+.Registerlink {
+  margin-left: 110px;
 }
