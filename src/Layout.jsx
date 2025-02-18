@@ -7,15 +7,17 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import Login from "./Login";
+import Login from "./pages/Login/Login";
 import RegisterForm from "./RegisterForm"
 import localStorage from "./services/localStorageService";
+// import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
 
 function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpen, isRegisterMode, setIsRegisterMode }) {
 
   const navigate = useNavigate();
 
+  const clientId = "1055771314509-sdpcmjtr5812hfkhu90ljd2k6n04sgoq.apps.googleusercontent.com";
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -83,15 +85,18 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
 
       {/* Login modal (only if isModalOpen == true) */}
       {isModalOpen && (isRegisterMode ? ( 
-        <Login
-          closeModal={closeModal}
-          setRole={setRole}
-          setIsLoggedIn={(val) => {
-            console.log("LAYOUT: setIsLoggedIn got called with", val);
-            setIsLoggedIn(val);
-          }}
-          setIsRegisterMode = {setIsRegisterMode}
-        />)
+        //  <GoogleOAuthProvider clientId={clientId}>
+          <Login
+            closeModal={closeModal}
+            setRole={setRole}
+            setIsLoggedIn={(val) => {
+              console.log("LAYOUT: setIsLoggedIn got called with", val);
+              setIsLoggedIn(val);
+            }}
+            setIsRegisterMode = {setIsRegisterMode}
+          />
+        // </GoogleOAuthProvider>
+        )
       : ( <RegisterForm  closeModal={closeModal} setIsRegisterMode={setIsRegisterMode}/> ) 
       )}
     </div>

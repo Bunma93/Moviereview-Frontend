@@ -1,9 +1,11 @@
 import { React, useState } from "react";
-import "./Login.scss";
-import axios from "./config/axios";
+import styles from "./Login.module.scss";
+import axios from "../../config/axios";
 import { notification } from "antd";
-import localStorage from "./services/localStorageService";
+import localStorage from "../../services/localStorageService";
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode"; // ใช้ถอดรหัส JWT Token ที่ได้รับจาก Google
 
 const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
   const [formData, setFormData] = useState({
@@ -26,6 +28,28 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
       message: message,
       description: description,
     });
+  };
+
+  const handleSuccess = (response) => {
+    const token = response.credential; // รับ JWT Token ที่ได้จาก Google
+    const decoded = jwtDecode(token); // ถอดรหัส JWT Token
+
+    console.log("Google User:", decoded); // ดูข้อมูลผู้ใช้จาก Google
+
+    localStorage.setItem("ACCESS_TOKEN", token); // บันทึก token ลง localStorage
+    setIsLoggedIn(true); // อัพเดตสถานะการล็อกอิน
+    setRole("user"); // กำหนด role หลังจากล็อกอินสำเร็จ
+    openNotificationWithIcon(
+      "success",
+      "Login Success",
+      "You have successfully logged in!"
+    );
+    handleClose(); // ปิดโมดอล
+    // navigate("/profile"); // เปลี่ยนเส้นทางไปหน้าโปรไฟล์
+  };
+
+  const handleFailure = (error) => {
+    console.log("Google Login Failed:", error);
   };
 
   const handleClose = () => {
@@ -80,13 +104,13 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-content-info">
-          <div className="modal-content-info-header">Sign in account</div>
+    <div className={styles.modal_overlay} onClick={handleClose}>
+      <div className={styles.modal_content} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modal_content_info}>
+          <div className={styles.modal_content_info_header}>Sign in account</div>
           <div>ลงทะเบียนบัญชีของคุณ</div>
         </div>
-        <div className="modal-content-input">
+        <div className={styles.modal_content_input}>
           <form>
             <label htmlFor="username">Username</label>
             <input
@@ -98,7 +122,6 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
               onChange={handleChange}
               required
             />
-            <br />
 
             <label htmlFor="password">Password</label>
             <input
@@ -110,13 +133,21 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
               onChange={handleChange}
               required
             />
-            <br />
 
             <button type="submit" disabled={loading} onClick={handleSubmit}>
               {loading ? "Loading..." : "Login"}
-            </button>
+            </button><br></br>
+
+            {/* <div> 
+              <h2>Login with Google</h2>
+              <GoogleLogin 
+                onSuccess={handleSuccess} 
+                onError={handleFailure}
+              />
+            </div> */}
+            <br></br>
             <button type="button" onClick={switchToRegister}>
-                Register
+                ยังไม่มีบัญชี
             </button>
           </form>
         </div>

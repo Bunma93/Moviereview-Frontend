@@ -6,6 +6,7 @@ import axios from "../../config/axios";
 import { Link } from 'react-router-dom';
 import { Avatar, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import CoverPageCarousel from "../../Carousel"
 
 function ProfilePage() {
     const [userProfile, setUserProfile] = useState([]);
@@ -26,7 +27,7 @@ function ProfilePage() {
         <div>
             <div className="coverPage-Profile">
                 <img src="userProfile.posterimagePath" />
-
+                <CoverPageCarousel/>
             </div>
             <div>
                 <Avatar size={200} icon={<UserOutlined />} src={imageUrl}/>

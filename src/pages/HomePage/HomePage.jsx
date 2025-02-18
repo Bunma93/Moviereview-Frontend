@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import "./HomePage.scss"
 import { Link } from 'react-router-dom';
 import Movieposter from '../../component/movieposter';
-import Login from "../../Login"
 import axios from 'axios';
+import { Carousel } from 'antd';
+import Admin from "../Admin/Admin";
+import About from '../../component/About/About';
+import Footer from '../../component/Footer/Footer';
 
 function HomePage({isLoggedIn, setIsModalOpen}) {
     const [movielist, setmovielist] = useState([]);
@@ -23,11 +26,18 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
         }
     },[]);
 
+    const contentStyle = {
+        height: '500px',
+        color: '#fff',
+        lineHeight: '160px',
+        textAlign: 'center',
+        background: '#364d79',
+      };
+
     return (
         <div className='container'>
             {/* ปกด้านบน */}
-            {movielist.map((list) => (<div className='coverPage'>
-                
+            {movielist.map((list) => (<div className='coverPage'  key={list.id}>
                 <div><a href='#'>Today</a></div>
                 <div className='movieList'>
                     <div className='movieSelect' style={{ backgroundImage: `url("image/fanday-poster.jpg")`}}>
@@ -40,6 +50,34 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
             </div>
             ))}
             <div className='coverImage'>
+                <Carousel autoplay>
+                    <div>
+                      <div style={contentStyle}>
+                        {movielist.map((list) => (
+                            <div className='coverPage'>
+                                <div><a href='#'>Today</a></div>
+                                <div className='movieList'>
+                                    <div className='movieSelect' style={{ backgroundImage: `url("image/fanday-poster.jpg")`}}>
+                                    <div dangerouslySetInnerHTML={{ __html: list.title }} />
+                                        <Link to="/movieinfo">
+                                            <button>อ่านรีวิว</button>
+                                        </Link>
+                                    </div>
+                                </div> 
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 style={contentStyle}>2</h3>
+                    </div>
+                    <div>
+                      <h3 style={contentStyle}>3</h3>
+                    </div>
+                    <div>
+                      <h3 style={contentStyle}>4</h3>
+                    </div>
+                  </Carousel>
                 <img src="image/fanday.jpg" alt='fanday'/>
             </div>
 
@@ -48,13 +86,13 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
                 <div>กำลังฉายในโรงภาพยนต์</div>
                 <div>เพิ่มเติม<span>รุปลูกศร</span></div>
             </div>
+            <Admin/>
             <div className='Movie-Container'>
                 <Movieposter moviename={"ตาคลีเจเนซิส"} moviepic={"image/thumb_3714.jpg"} />    
                 <Movieposter moviename={"ธี่หยด"} moviepic={"image/TeeYod.jpg"} />
                 <Movieposter moviename={"ธี่หยด"} moviepic={"image/TeeYod.jpg"} />
                 <Movieposter moviename={"ธี่หยด"} moviepic={"image/TeeYod.jpg"} />
             </div>
-
 
             {/* หนังเก่า */}
             <div className='Movie'>
@@ -82,7 +120,8 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
             </div>
 
             {/* About Us */}
-            <div className='aboutUs'>About Us</div>
+            <About/>
+            <Footer/>
         </div>
     )
 }

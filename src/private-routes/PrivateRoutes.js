@@ -2,11 +2,12 @@ import { React, useState } from "react";
 import ConfigRoutes from "../config/routes";
 import { Navigate, Routes, Outlet, Route, Link } from "react-router-dom";
 import Layout from "../Layout";
-import Login from "../Login";
+import Login from "../pages/Login/Login";
 
 function PrivateRoutes({ role = "guest", setRole }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegisterMode, setIsRegisterMode] = useState(true);
+  
   const [isModalOpen, setIsModalOpen] = useState(false); // สถานะการเปิดโมดอล
   const allowedRoutes = ConfigRoutes[role]?.allowedRoutes || [];
   const redirectRoutes = ConfigRoutes[role]?.redirectRoutes || "/register"; // ค่า default ให้ redirect ไปยัง register
