@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './RegisterForm.module.scss';
 import axios from './config/axios';
-import { notification, Form, Input, Button, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { notification, Form, Input, Button, Upload , Image} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 const layout = {
@@ -10,10 +10,21 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
 const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
   const [form] = Form.useForm(); // ใช้ formInstance ของ Ant Design
   const navigate = useNavigate(); // ใช้สำหรับเปลี่ยนหน้า
-  const [file, setFile] = useState(null); // เก็บไฟล์ที่อัพโหลด
+
+  const [previewImage, setPreviewImage] = useState(null); // เก็บ URL ของรูปที่เลือก
+  const [fileList, setFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
+  // const [file, setFile] = useState(null); // เก็บไฟล์ที่อัพโหลด
 
   const openNotification = (type, message, description) => {
     notification[type]({
@@ -26,9 +37,26 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
     setIsRegisterMode(true);
   };
 
-  const handleBeforeUpload = (file) => {
-    setFile(file); // เก็บไฟล์ไว้ใน state
-    return false; // ป้องกันไม่ให้ Upload อัพโหลดอัตโนมัติ
+  // const handleBeforeUpload = (file) => {
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     file.preview = e.target.result; // เก็บ URL ของรูปที่แปลงแล้ว
+  //     setFileList([file]); // อนุญาตให้มีรูปเดียว
+  //   };
+  //   reader.readAsDataURL(file); // อ่านไฟล์เป็น Base64
+  //   return false; // ป้องกันการอัปโหลดอัตโนมัติ
+  // };
+
+   // ฟังก์ชันอัปเดตรูปที่เลือกและแสดงตัวอย่าง
+   const handleChange = async ({ fileList: newFileList }) => {
+    if (newFileList.length > 0) {
+      const file = newFileList[0].originFileObj;
+      const imagePreview = await getBase64(file);
+      setPreviewImage(imagePreview);
+    } else {
+      setPreviewImage(null);
+    }
+    setFileList(newFileList);
   };
 
   const handleSubmit = async (values) => {
@@ -39,8 +67,8 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
       }
     });
 
-    if (file) {
-      formData.append('userimagePath', file); // เพิ่มไฟล์ไปยัง FormData
+    if (fileList.length > 0) {
+      formData.append('userimagePath', fileList[0].originFileObj);
     }
 
     try {
@@ -54,6 +82,13 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
       openNotification('error', 'Registration Failed', errorMsg);
     }
   };
+
+  const uploadButton = (
+    <button style={{ border: 0, background: 'none',color:"white" }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8, color:"white" ,fontSize:"13px"}}>อัพโหลดรูป</div>
+    </button>
+  );
 
   return (
     <div className={styles.modal_overlay} onClick={closeModal}>
@@ -120,10 +155,28 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
               <Input type="number" min="0" placeholder="Your age" />
             </Form.Item>
 
-            <Form.Item label="อัพโหลดรูปโปรไฟล์" name="userimagePath" >
-             <Upload beforeUpload={handleBeforeUpload} maxCount={1} showUploadList={true}>
-                <Button icon={<UploadOutlined /> }>อัพโหลดไฟล์</Button>
+              {/* Upload Image Section */}
+              <Form.Item label="อัพโหลดรูปโปรไฟล์">
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                onChange={handleChange}
+                maxCount={1} // จำกัดให้เลือกรูปเดียว
+                beforeUpload={() => false} // ป้องกันการอัปโหลดอัตโนมัติ
+                showUploadList={{ showPreviewIcon: true }}
+              >
+                {fileList.length >= 1 ? null : uploadButton}
               </Upload>
+
+              {/* แสดงรูปที่เลือก */}
+              {/* {previewImage && (
+                <Image
+                  width={100}
+                  style={{ marginTop: 10, borderRadius: 8 }}
+                  src={previewImage}
+                  alt="Preview"
+                />
+              )} */}
             </Form.Item>
 
             <Form.Item>

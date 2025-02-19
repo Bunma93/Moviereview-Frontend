@@ -10,8 +10,8 @@ import {
     VideoCameraOutlined,
   } from '@ant-design/icons';
 import { Form ,Button, Layout, Menu, theme} from "antd";
+import AdminMovieForm from './AdminMovieForm';
 
-const Home = () => <h1>หน้าหลัก</h1>;
 const Movies = () => <h1>หนังทั้งหมด</h1>;
 const Settings = () => <h1>ตั้งค่า</h1>;
 
@@ -60,11 +60,12 @@ function Admin() {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
-            background: '#ffffff',  // ใช้สีที่ต้องการ
+            background: '#fff',  // ใช้สีที่ต้องการ
             borderRadius: '8px',     // ใช้ borderRadius ที่ต้องการ
+            width: "100%"
           }}
         >
-            {selectedForm === "home" && <Home />}
+            {selectedForm === "home" && <AdminMovieForm/>}
             {selectedForm === "movies" && <Movies />}
             {selectedForm === "settings" && <Settings />}
         </Content>

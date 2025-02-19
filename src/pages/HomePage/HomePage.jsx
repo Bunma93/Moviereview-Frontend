@@ -37,7 +37,7 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
     return (
         <div className='container'>
             {/* ปกด้านบน */}
-            {movielist.map((list) => (<div className='coverPage'  key={list.id}>
+            {movielist.map((list, index) => (<div className='coverPage'  key={index}>
                 <div><a href='#'>Today</a></div>
                 <div className='movieList'>
                     <div className='movieSelect' style={{ backgroundImage: `url("image/fanday-poster.jpg")`}}>
@@ -53,8 +53,8 @@ function HomePage({isLoggedIn, setIsModalOpen}) {
                 <Carousel autoplay>
                     <div>
                       <div style={contentStyle}>
-                        {movielist.map((list) => (
-                            <div className='coverPage'>
+                        {movielist.map((list, index) => (
+                            <div className='coverPage' key={index}>
                                 <div><a href='#'>Today</a></div>
                                 <div className='movieList'>
                                     <div className='movieSelect' style={{ backgroundImage: `url("image/fanday-poster.jpg")`}}>
