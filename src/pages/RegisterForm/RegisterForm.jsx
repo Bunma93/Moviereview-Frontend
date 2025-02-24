@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './RegisterForm.module.scss';
-import axios from './config/axios';
+import axios from '../../config/axios';
 import { notification, Form, Input, Button, Upload , Image} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,6 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
 
   const [previewImage, setPreviewImage] = useState(null); // เก็บ URL ของรูปที่เลือก
   const [fileList, setFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
-  // const [file, setFile] = useState(null); // เก็บไฟล์ที่อัพโหลด
 
   const openNotification = (type, message, description) => {
     notification[type]({
@@ -37,16 +36,6 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
     setIsRegisterMode(true);
   };
 
-  // const handleBeforeUpload = (file) => {
-  //   const reader = new FileReader();
-  //   reader.onload = (e) => {
-  //     file.preview = e.target.result; // เก็บ URL ของรูปที่แปลงแล้ว
-  //     setFileList([file]); // อนุญาตให้มีรูปเดียว
-  //   };
-  //   reader.readAsDataURL(file); // อ่านไฟล์เป็น Base64
-  //   return false; // ป้องกันการอัปโหลดอัตโนมัติ
-  // };
-
    // ฟังก์ชันอัปเดตรูปที่เลือกและแสดงตัวอย่าง
    const handleChange = async ({ fileList: newFileList }) => {
     if (newFileList.length > 0) {
@@ -58,7 +47,7 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
     }
     setFileList(newFileList);
   };
-
+  
   const handleSubmit = async (values) => {
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
@@ -156,7 +145,7 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
             </Form.Item>
 
               {/* Upload Image Section */}
-              <Form.Item label="อัพโหลดรูปโปรไฟล์">
+            <Form.Item label="อัพโหลดรูปโปรไฟล์">
               <Upload
                 listType="picture-card"
                 fileList={fileList}
@@ -167,16 +156,6 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
               >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
-
-              {/* แสดงรูปที่เลือก */}
-              {/* {previewImage && (
-                <Image
-                  width={100}
-                  style={{ marginTop: 10, borderRadius: 8 }}
-                  src={previewImage}
-                  alt="Preview"
-                />
-              )} */}
             </Form.Item>
 
             <Form.Item>
@@ -196,5 +175,6 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
     </div>
   );
 };
+
 
 export default RegisterForm;

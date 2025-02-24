@@ -37,11 +37,6 @@ apiClient.interceptors.response.use(
     },
     (error) => {
         if (error.response || error.response.status === 401) {
-            localStorage.removeItem();
-            window.location.reload();//ให้หน้าเว็บรีโหลดตัวเอง
-            notification.error({
-                message: "กรุณาเข้าสู่ระบบใหม่"
-            });
             console.error("Response Error:", error.response || error.message);
             return Promise.reject(error); //ถ่าไม่ return Promise จะเกิด error
         }

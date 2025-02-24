@@ -1,7 +1,7 @@
 import HomePage from "../pages/HomePage/HomePage";
 import MovieInfoPage from "../pages/MovieInfoPage/MovieInfoPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
-import RegisterForm from "../RegisterForm";
+import RegisterForm from "../pages/RegisterForm/RegisterForm";
 import Login from "../pages/Login/Login";
 
 const components = {

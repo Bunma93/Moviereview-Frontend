@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styles from './Admin.module.scss';
-import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -9,16 +7,16 @@ import {
     UserOutlined,
     VideoCameraOutlined,
   } from '@ant-design/icons';
-import { Form ,Button, Layout, Menu, theme} from "antd";
+import { Button, Layout, Menu} from "antd";
 import AdminMovieForm from './AdminMovieForm';
+import AdminActorForm from './AdminActorForm';
 
-const Movies = () => <h1>หนังทั้งหมด</h1>;
 const Settings = () => <h1>ตั้งค่า</h1>;
 
 function Admin() {
     const { Header, Sider, Content } = Layout;
     const [collapsed, setCollapsed] = useState(false);
-    const [selectedForm, setSelectedForm] = useState("home"); // ควบคุมว่าจะแสดงอะไร
+    const [selectedForm, setSelectedForm] = useState("actors"); // ควบคุมว่าจะแสดงอะไร
 
     return (<div>
         <div className={styles.test}>
@@ -31,7 +29,7 @@ function Admin() {
           defaultSelectedKeys={['home']}
           onClick={({ key }) => setSelectedForm(key)}// ✅ เปลี่ยนเฉพาะฟอร์ม ไม่เปลี่ยนหน้า
           items={[
-              { key: "home", icon: <UserOutlined />, label: "นักแสดง" },
+              { key: "actors", icon: <UserOutlined />, label: "นักแสดง" },
               { key: "movies", icon: <VideoCameraOutlined />, label: "ข้อมูลหนัง" },
               { key: "settings", icon: <SettingOutlined />, label: "ตั้งค่า" },
           ]}
@@ -65,8 +63,8 @@ function Admin() {
             width: "100%"
           }}
         >
-            {selectedForm === "home" && <AdminMovieForm/>}
-            {selectedForm === "movies" && <Movies />}
+            {selectedForm === "actors" && <AdminActorForm/>}
+            {selectedForm === "movies" && <AdminMovieForm/>}
             {selectedForm === "settings" && <Settings />}
         </Content>
       </Layout>

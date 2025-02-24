@@ -1,0 +1,16 @@
+.actorContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.actorProfile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.actorPicture {
+    background-color: aquamarine;
+}

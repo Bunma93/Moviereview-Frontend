@@ -8,7 +8,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Login from "./pages/Login/Login";
-import RegisterForm from "./RegisterForm"
+import RegisterForm from "./pages/RegisterForm/RegisterForm"
 import localStorage from "./services/localStorageService";
 // import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
