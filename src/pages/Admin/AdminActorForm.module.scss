@@ -14,3 +14,45 @@
 .actorPicture {
     background-color: aquamarine;
 }
+
+.avatarWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.buttonOverlay {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+display: flex;
+gap: 10px;
+opacity: 0;
+transition: opacity 0.3s ease-in-out;
+}
+
+.avatarWrapper:hover .buttonOverlay {
+opacity: 1;
+}
+
+.editButton, .deleteButton {
+background-color: rgba(0, 0, 0, 0.7);
+color: white;
+border: none;
+border-radius: 50%;
+width: 30px;
+height: 30px;
+font-size: 16px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.editButton:hover {
+background-color: #3498db;
+}
+
+.deleteButton:hover {
+background-color: #e74c3c;
+}

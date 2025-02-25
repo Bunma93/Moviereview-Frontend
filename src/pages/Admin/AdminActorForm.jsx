@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, DatePicker, Select, Button, Upload, message, Divider, Avatar } from 'antd';
+import { Form, Input, DatePicker, Select, Button, Upload, message, Divider, Avatar, Modal } from 'antd';
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
 import axios from '../../config/axios';
 import styles from './AdminActorForm.module.scss';
 
 const AdminActorForm = () => {
   const [actorList, setactorList] = useState([]);
+  const [searchText, setSearchText] = useState("");
+
+  const filteredActors = actorList.filter(actor =>
+    actor.actorname.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const fetchactorList = async () => {
     const httpResponse = await axios.get("http://localhost:8000/actor")
@@ -55,6 +60,7 @@ const AdminActorForm = () => {
       form.resetFields();
       setactorFile(null);
       setactorFileList([]);
+      fetchactorList();
     } catch (error) {
     // เช็คว่า error.response มีอยู่จริงก่อน
       if (error.response) {
@@ -75,64 +81,97 @@ const AdminActorForm = () => {
     </button>
   );
 
+  const handleDelete = async (id) => {
+    Modal.confirm({
+      title: 'ยืนยันการลบ',
+      content: 'คุณแน่ใจหรือไม่ว่าต้องการลบนักแสดงนี้?',
+      okText: 'ยืนยัน',
+      cancelText: 'ยกเลิก',
+      onOk: async () => {
+        try {
+          await axios.delete(`/actor/${id}`);
+          message.success("ลบนักแสดงสำเร็จ!");
+          // setactorList(actorList.filter(actor => actor.id !== id));
+          fetchactorList();
+        } catch (error) {
+          message.error("เกิดข้อผิดพลาดในการลบ");
+        }
+      }
+  })
+  
+} 
   return (
-    <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item label="ชื่อนักแสดง/ผู้กำกับ" name="actorname" rules={[{ required: true, message: 'กรุณากรอกชื่อนักแสดง/ผู้กำกับ' }]}>
-        <Input placeholder="ใส่ชื่อนักแสดง/ผู้กำกับ" />
-      </Form.Item>
+    <div>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Form.Item label="ชื่อนักแสดง/ผู้กำกับ" name="actorname" rules={[{ required: true, message: 'กรุณากรอกชื่อนักแสดง/ผู้กำกับ' }]}>
+          <Input placeholder="ใส่ชื่อนักแสดง/ผู้กำกับ" />
+        </Form.Item>
 
-      <Form.Item label="วันเกิดนักแสดง/ผู้กำกับ" name="birthdate" rules={[{ required: true, message: 'กรุณาเลือกวันเกิดนักแสดง/ผู้กำกับ' }]}>
-        <DatePicker
-          style={{ width: '100%' }}
-          format="YYYY-MM-DD" // กำหนด format ของวันที่
-         />
-      </Form.Item>
+        <Form.Item label="วันเกิดนักแสดง/ผู้กำกับ" name="birthdate" rules={[{ required: true, message: 'กรุณาเลือกวันเกิดนักแสดง/ผู้กำกับ' }]}>
+          <DatePicker
+            style={{ width: '100%' }}
+            format="YYYY-MM-DD" // กำหนด format ของวันที่
+          />
+        </Form.Item>
 
-      <Form.Item label="สัญชาตินักแสดง/ผู้กำกับ" name="country" rules={[{ required: true, message: 'กรุณากรอกสัญชาตินักแสดง/ผู้กำกับ' }]}>
-        <Input placeholder="ใส่สัญชาตินักแสดง/ผู้กำกับ" />
-      </Form.Item>
-      {/* <Form.Item label="รายละเอียด" name="description" rules={[{ required: true, message: 'กรุณากรอกรายละเอียด' }]}>
-        <Input.TextArea rows={4} placeholder="ใส่รายละเอียดภาพยนตร์" />
-      </Form.Item> */}
-      <Form.Item label="ตำแหน่ง" name="role" rules={[{ required: true, message: 'กรุณาเลือกตำแหน่ง' }]}>
-          <Select>
-            <Select.Option value="director">ผู้กำกับ</Select.Option>
-            <Select.Option value="actor">นักแสดง</Select.Option>
-          </Select>
-      </Form.Item>
+        <Form.Item label="สัญชาตินักแสดง/ผู้กำกับ" name="country" rules={[{ required: true, message: 'กรุณากรอกสัญชาตินักแสดง/ผู้กำกับ' }]}>
+          <Input placeholder="ใส่สัญชาตินักแสดง/ผู้กำกับ" />
+        </Form.Item>
+        {/* <Form.Item label="รายละเอียด" name="description" rules={[{ required: true, message: 'กรุณากรอกรายละเอียด' }]}>
+          <Input.TextArea rows={4} placeholder="ใส่รายละเอียดภาพยนตร์" />
+        </Form.Item> */}
+        <Form.Item label="ตำแหน่ง" name="role" rules={[{ required: true, message: 'กรุณาเลือกตำแหน่ง' }]}>
+            <Select>
+              <Select.Option value="director">ผู้กำกับ</Select.Option>
+              <Select.Option value="actor">นักแสดง</Select.Option>
+            </Select>
+        </Form.Item>
 
-      <Form.Item label="อัปโหลดภาพนักแสดง/ผู้กำกับ" name="actorimagePath" rules={[{ required: true, message: 'กรุณาอัพโหลดรูปภาพ' }]}>
-        <Upload 
-          listType="picture-circle" 
-          fileList={actorFileList}
-          onChange={handleactorChange}
-          maxCount={1}
-          beforeUpload={() => false}
-          showUploadList={{ showPreviewIcon: true }}>
-          {actorFileList.length >= 1 ? null : uploadButton}
-          {/* <Button icon={<UploadOutlined />}>อัปโหลดภาพนักแสดง</Button> */}
-        </Upload>
-      </Form.Item>
+        <Form.Item label="อัปโหลดภาพนักแสดง/ผู้กำกับ" name="actorimagePath" rules={[{ required: true, message: 'กรุณาอัพโหลดรูปภาพ' }]}>
+          <Upload 
+            listType="picture-circle" 
+            fileList={actorFileList}
+            onChange={handleactorChange}
+            maxCount={1}
+            beforeUpload={() => false}
+            showUploadList={{ showPreviewIcon: true }}>
+            {actorFileList.length >= 1 ? null : uploadButton}
+            {/* <Button icon={<UploadOutlined />}>อัปโหลดภาพนักแสดง</Button> */}
+          </Upload>
+        </Form.Item>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
-          เพิ่มข้อมูลนักแสดง
-        </Button>
-      </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            เพิ่มข้อมูลนักแสดง
+          </Button>
+        </Form.Item>
+      </Form>
+
       <Divider orientation="left" style={{ borderColor: '#00000090' }}>ข้อมูลนักแสดง</Divider>
-
+      <Input.Search 
+        placeholder="ค้นหาชื่อนักแสดง..." 
+        allowClear 
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ marginBottom: 16, width: "70%" }}
+      />
       <div className={styles.actorContainer}>
-        {actorList.map((list)=> {
-          const imageUrl = `http://localhost:8000/${list.actorimagePath}`;
-          return (
-          <div key={list.id} className={styles.actorProfile}>
-            <Avatar size={100} icon={<UserOutlined />} src={imageUrl} className={styles.actorPicture}/>
-            {list.actorname}
-          </div>
-          );
-        })}
-      </div>
-    </Form>
+          {filteredActors.map((list)=> {
+            const imageUrl = `http://localhost:8000/${list.actorimagePath}`;
+            return (
+            <div key={list.id} className={styles.actorProfile}>
+            <div className={styles.avatarWrapper}>
+              <Avatar size={100} icon={<UserOutlined />} src={imageUrl} className={styles.actorPicture}/>
+              <div className={styles.buttonOverlay}>
+                {/* <button className={styles.editButton} onClick={() => handleEdit(list.id)}>✏️</button> */}
+                <button className={styles.deleteButton} onClick={() => handleDelete(list.id)}>🗑️</button>
+              </div>
+            </div>
+          <p>{list.actorname}</p>
+            </div>
+            );
+          })}
+        </div>
+    </div>
   );
 };
 
