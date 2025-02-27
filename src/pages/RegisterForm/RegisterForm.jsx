@@ -64,11 +64,11 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
       await axios.post('/user/register', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      openNotification('success', 'Registration Successful', 'You have successfully registered! Please log in.');
+      openNotification('success', 'ลงทะเบียนสำเร็จ', 'ลงทะเบียนบัญชีสำเร็จแล้ว กรุณาลงชื่อเข้าใช้');
       navigate('/login');
     } catch (error) {
       const errorMsg = error.response?.data?.message || error.message;
-      openNotification('error', 'Registration Failed', errorMsg);
+      openNotification('error', 'ลงทะเบียนไม่สำเร็จ', errorMsg);
     }
   };
 

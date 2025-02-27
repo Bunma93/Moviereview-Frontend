@@ -3,6 +3,7 @@ import { Form, Input, DatePicker, Select, Button, Upload, message, Divider, Avat
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
 import axios from '../../config/axios';
 import styles from './AdminActorForm.module.scss';
+import moment from 'moment';
 
 const AdminActorForm = () => {
   const [actorList, setactorList] = useState([]);
@@ -80,6 +81,77 @@ const AdminActorForm = () => {
       <div style={{ marginTop: 8, color:"black" ,fontSize:"12px"}}>อัพโหลดรูป</div>
     </button>
   );
+  
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedActor, setSelectedActor] = useState(null);
+  const [formEdit] = Form.useForm();
+
+  const handleEdit = (id) => {
+    const actor = actorList.find(actor => actor.id === id);
+    if (!actor) {
+      message.error("ไม่พบนักแสดงที่ต้องการแก้ไข");
+      return;
+    }
+
+    setSelectedActor(actor);
+    setIsEditModalOpen(true);
+
+    formEdit.setFieldsValue({
+      actorname: actor.actorname,
+      birthdate: actor.birthdate ? moment(actor.birthdate) : null,
+      country: actor.country,
+      role: actor.role,
+    });
+
+    if (actor.actorimagePath) {
+      setactorFileList([
+        {
+          uid: '-1', // ใช้ UID คงที่เพื่อไม่ให้ React ลบ
+          name: 'actor_image.jpg',
+          status: 'done',
+          url: `http://localhost:8000/${actor.actorimagePath}`, // URL ของรูปเก่า
+        },
+      ]);
+    } else {
+      setactorFileList([]); // ถ้าไม่มีรูป ให้เคลียร์ค่า
+    }
+  };
+
+  const handleUpdate = async (values) => {
+    if (!selectedActor) {
+      message.error("เกิดข้อผิดพลาด: ไม่มีนักแสดงที่ถูกเลือก");
+      return;
+    }
+
+    // ตรวจสอบข้อมูลที่เลือกก่อนการอัปเดต
+    console.log("ข้อมูลที่ถูกเลือกและแก้ไข:", values);
+    
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      if (key === "birthdate") {
+        formData.append(key, values[key] ? values[key].format("YYYY-MM-DD") : "");
+      } else {
+        formData.append(key, values[key]);
+      }
+    });
+
+    if (actorFile) {
+      formData.append("actorimagePath", actorFile);
+    }
+
+    try {
+      await axios.put(`http://localhost:8000/actor/${selectedActor.id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      message.success("อัปเดตข้อมูลสำเร็จ!");
+      fetchactorList(); // โหลดข้อมูลใหม่
+      setIsEditModalOpen(false);
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาดในการอัปเดต:", error);
+      message.error("เกิดข้อผิดพลาดในการอัปเดต");
+    }
+  };
 
   const handleDelete = async (id) => {
     Modal.confirm({
@@ -98,10 +170,56 @@ const AdminActorForm = () => {
         }
       }
   })
-  
 } 
+
   return (
     <div>
+      <Modal 
+        title="แก้ไขข้อมูลนักแสดง"
+        open={isEditModalOpen}
+        onCancel={() => setIsEditModalOpen(false)}
+        onOk={() => formEdit.submit()}
+      >
+        <Form 
+          form={formEdit}
+          // initialValues={selectedActor} 
+          onFinish={handleUpdate}
+          layout="vertical"
+        >
+          <Form.Item label="ชื่อนักแสดง" name="actorname">
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="วันเกิด" name="birthdate">
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item>
+
+          <Form.Item label="สัญชาติ" name="country">
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="ตำแหน่ง" name="role">
+            <Select>
+              <Select.Option value="director">ผู้กำกับ</Select.Option>
+              <Select.Option value="actor">นักแสดง</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="อัปโหลดภาพนักแสดง/ผู้กำกับ" name="actorimagePath">
+            <Upload 
+              listType="picture-circle" 
+              fileList={actorFileList}
+              onChange={handleactorChange}
+              maxCount={1}
+              beforeUpload={() => false}
+              showUploadList={{ showPreviewIcon: true }}
+            >
+              {actorFileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </Form.Item>
+        </Form>
+      </Modal>
+
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="ชื่อนักแสดง/ผู้กำกับ" name="actorname" rules={[{ required: true, message: 'กรุณากรอกชื่อนักแสดง/ผู้กำกับ' }]}>
           <Input placeholder="ใส่ชื่อนักแสดง/ผู้กำกับ" />
@@ -162,7 +280,7 @@ const AdminActorForm = () => {
             <div className={styles.avatarWrapper}>
               <Avatar size={100} icon={<UserOutlined />} src={imageUrl} className={styles.actorPicture}/>
               <div className={styles.buttonOverlay}>
-                {/* <button className={styles.editButton} onClick={() => handleEdit(list.id)}>✏️</button> */}
+                <button className={styles.editButton} onClick={() => handleEdit(list.id)}>✏️</button>
                 <button className={styles.deleteButton} onClick={() => handleDelete(list.id)}>🗑️</button>
               </div>
             </div>
