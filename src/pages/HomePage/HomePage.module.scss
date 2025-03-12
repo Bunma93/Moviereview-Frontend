@@ -9,8 +9,22 @@
     font-family: "Kanit", sans-serif;
 }
 
+// .swiper-button-next {
+//     color: #ff6347; /* เปลี่ยนสีลูกศรขวา */
+//     background-color: rgba(0, 0, 0, 0.5); /* เพิ่มพื้นหลัง */
+//     border-radius: 50%; /* ทำให้ลูกศรกลม */
+//     padding: 10px;
+// }
+
+// .swiper-button-prev {
+//     color: #ff6347; /* เปลี่ยนสีลูกศรซ้าย */
+//     background-color: rgba(0, 0, 0, 0.5); /* เพิ่มพื้นหลัง */
+//     border-radius: 50%; /* ทำให้ลูกศรกลม */
+//     padding: 10px;
+// }
+
 .container {
-    // background-color: antiquewhite;
+    background-color: rgb(14, 14, 14);
     width: 100%;
     display: flex;
     flex-direction:column;
@@ -110,12 +124,16 @@
    }
 }
 
-.Movie-Container {
-    display: flex;
+.Movie_Container {
     margin-top: 49px;
+    width: 95%;
+    padding: 20px;
 }
 
-.Movie-List {
+.SwiperSlide {
+    padding: 20px;
+}
+.Movie_List {
     width: 309px;
     height: 450px;
     background-color: aqua;
@@ -129,17 +147,17 @@
     justify-content: flex-end;
     padding: 0 0 30px 30px;
     color: #FFF;
-    &-Name {
+    &_Name {
         font-size: 22px;
         font-weight: 500;   
     }
-    &-Date {
+    &_Date {
         font-size: 16px;  
     }
-    &-Age {
+    &_Age {
         font-weight: 500;
     }
-    &-Lang {
+    &_Lang {
         display: flex;
     }
     &:hover {
@@ -152,7 +170,7 @@
     }
 }
 
-.Movie-List-Lang {
+.Movie_List_Lang {
     div {
         background-color: #ffffff25;
         margin-right: 6px;
@@ -160,17 +178,17 @@
         padding: 4px 10px;
     }
 }
-.followed-Header {
+.followed_Header {
     color: #000;
     font-size: 25px;
 }
 .followed {
-    &-list {
+    &_list {
         background-color: #0F0F0F;
-        &-Pic {
+        &_Pic {
 
         }
-        &-Name {
+        &_Name {
             font-size: 20px;
         }
     }

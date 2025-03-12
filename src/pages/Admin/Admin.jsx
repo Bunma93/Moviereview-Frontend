@@ -60,7 +60,7 @@ function Admin() {
             minHeight: 280,
             background: '#fff',  // ใช้สีที่ต้องการ
             borderRadius: '8px',     // ใช้ borderRadius ที่ต้องการ
-            width: "100%"
+            width: "90%"
           }}
         >
             {selectedForm === "actors" && <AdminActorForm/>}

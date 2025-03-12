@@ -14,7 +14,7 @@ const AdminActorForm = () => {
   );
 
   const fetchactorList = async () => {
-    const httpResponse = await axios.get("http://localhost:8000/actor")
+    const httpResponse = await axios.get("/actor")
     console.log("🔍 Response ทั้งหมด:", httpResponse);  // ดูทั้งหมด
     console.log("📌 Data ที่ได้จาก API:", httpResponse.data);  // ดูเฉพาะ data
     setactorList(httpResponse.data);

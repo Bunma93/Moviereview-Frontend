@@ -35,10 +35,29 @@ apiClient.interceptors.response.use(
         console.log("Response Received:", response);
         return response // คืนค่าเฉพาะข้อมูลใน response.data
     },
-    (error) => {
-        if (error.response || error.response.status === 401) {
-            console.error("Response Error:", error.response || error.message);
-            return Promise.reject(error); //ถ่าไม่ return Promise จะเกิด error
+     (error) => {
+        if (error.response && error.response.status === 401) {
+            const errorMessage = error.response.data || ""; // อ่านค่า `data` โดยตรง
+
+            if (errorMessage.toLowerCase().includes("unauthorized")) {  
+                console.error("Unauthorized Access:", errorMessage);
+
+                // ลบ Token ออกจาก localStorage
+                localStorage.removeItem("token");
+
+                // แจ้งเตือนผู้ใช้ให้ล็อกอินใหม่
+                notification.error({
+                    message: "Session Expired",
+                    description: "กรุณาเข้าสู่ระบบใหม่",
+                });
+            }
+
+             // รีเฟรชหน้าจอ
+             setTimeout(() => {
+                window.location.reload();
+            }, 1000); // รีเฟรชหลังจาก 1 วินาที
+            
+            return Promise.reject(error);
         }
 
         return Promise.reject(error);

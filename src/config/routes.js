@@ -18,7 +18,7 @@ const components = {
         component: ProfilePage
     },
     movieinfo : {
-        url: "/movieinfo",
+        url: "/movieinfo/:id",
         component:  MovieInfoPage
     },
     login : {

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '~swiper/scss';
+
+.swiper-button-next {
+    color: #ff6347;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.swiper-button-prev {
+    color: #ff6347;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.Movie_Background {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.Movie_List:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1D1D1D30;
+    box-shadow: inset 0px -115px 204px -33px rgb(0, 0, 0);
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1;
+}
+
+.Movie_List:hover::after {
+    opacity: 75%; /* ซ่อนเลเยอร์เงาตอน hover */
+}
+
+.Movie_List {
+    position: relative;
+    overflow: hidden;
+    width: 309px;
+    height: 450px;
+    background-color: rgba(255, 255, 255, 0.1);
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    // box-shadow: inset 0px -115px 204px -33px rgb(0, 0, 0);
+    margin-right: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 0 30px 30px;
+    color: #FFF;
+    z-index: 2;
+    &_Name {
+        font-size: 22px;
+        font-weight: 500;
+        z-index: 2;
+    }
+    &_Date {
+        font-size: 16px;
+        z-index: 2;
+        font-weight: 300;
+    }
+    &_Age {
+        font-weight: 500;
+        z-index: 2;
+    }
+    &_Lang {
+        display: flex;
+        z-index: 2;
+    }
+    &:hover {
+        transform: scale(1.05);
+        z-index: 10;
+        transition: transform 0.2s ease-in-out;
+        box-shadow: none;
+    }
+    &:not(:hover) {
+        transition: transform 0.3s ease-in-out; /* หดตัวช้า */
+    }
+}
+
+.Movie_List_Lang {
+    div {
+        background-color: #ffffff35;
+        margin-right: 6px;
+        border-radius: 5px;
+        padding: 4px 10px;
+    }
+}
+
+a {
+    text-decoration: none;
+}

@@ -7,12 +7,28 @@
     overflow: hidden;
     min-width: 1200px;
     min-height: 773px;
+    background-color: #ffffff;
     // max-width: 1500px;
     img {
         // height: 773px;
         min-height: 773px;
         width: 100%;
+        transition: opacity 0.6s ease-in-out;
     }
+}
+.coverImage .fade_image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+}
+
+.coverImage .fade_in {
+    opacity: 1;
+}
+
+.coverImage .fade_out {
+    opacity: 0;
 }
 
 .coverImage::after {
@@ -31,7 +47,7 @@
     justify-content: flex-end;
     padding: 82px;
     height: 690px;
-    &-name {
+    &_name {
         :first-child {
             font-size: 72px;
             font-weight: 500;
@@ -47,28 +63,28 @@
             padding: 0;
         }
     }
-    &-logo {
+    &_logo {
         color: #fff;
         span {
             color:#AB0A10;
         }
     }
-    &-btn {
+    &_btn {
         margin-top: 60px;
     }
 }
-.movieinfo-story {
+.movieinfo_story {
     display: flex;
     flex-direction: column;
     margin: 25px 45px;
     padding: 35px;
     background-color: #D9D9D9;
     border-radius: 10px;
-    &-header {
+    &_header {
         font-size: 25px;
         font-weight: 600;
     }
-    &-detail {
+    &_detail {
         margin-top: 35px;
         padding: 0px 20px;
         font-size: 20px;
@@ -76,33 +92,43 @@
         line-height: 1.9em;
     }
 }
-.movieinfo-actor {
+.movieinfo_actor {
+    display: flex;
+    flex-direction: column;
+    // border: 0.5px solid #262626;
+}
+.movieinfo_container {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    column-gap: 35px;
+    margin-left: 29px;
+}
+
+.movieinfo_review {
     display: flex;
     flex-direction: column;
     border: 0.5px solid #262626;
-}
-.movieinfo-container {
-    display: flex;
-}
-.movieinfo-review {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border: 0.5px solid #262626;
-    &-header {
+    // background-color: #AB0A10;
+    border-radius: 12px;
+    padding: 20px 50px;
+    &_header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        font-size: 20px;
         button {
             color:#fff;
             background-color: #141414;
-            border-radius: 8px;
+            border-radius: 9px;
+            padding: 12px 15px;
+            font-size: 16px;
         }
     }
     h1 {
         font-size: 20px;
         font-weight: 500;
     }
-    &-comment {
+    &_comment {
         background-color: #0F0F0F;
         color:#fff;
         border-radius: 12px;
@@ -111,18 +137,18 @@
         min-height: 240px;
         margin: 20px 55px;
         padding: 40px;
-        &-info {
+        &_info {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: #262626;
             margin-bottom: 20px;
         }
-        &-box {
+        &_box {
             display: flex;
             align-items: center;
         }
-        &-pic {
+        &_pic {
             display: inline-block;
             width: 40px;
             border-radius: 50%;
@@ -133,20 +159,19 @@
     }
 }
 
-.movieinfo-data {
-    flex: auto;
+.movieinfo_data {
     display: flex;
+    background-color: #ff6262;
+    border: 0.5px solid #262626;
+    border-radius: 12px;
+    margin-right: 50px;
+    padding: 50px;
 }
 
-.highlight {
-    color: #AB0A10;
-    font-weight: 600;
-    font-size: 23px;
-}
 .btn {
     margin-right: 16px;
 }
-.btn-watchNow {
+.btn_watchNow {
     display: inline-block;
     color:white;
     border-color: #FFFFFF60;
@@ -161,7 +186,7 @@
     }
 }
 
-.btn-watchTrailer {
+.btn_watchTrailer {
     color:rgb(210, 210, 210);
     border-color: #FFFFFF60;
     background-color: transparent;
@@ -171,114 +196,129 @@
 }
 
 //ลองทำ
-// .popup-overlay {
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     width: 100vw;
-//     height: 100vh;
-//     background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังมืด */
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-// }
+.popup_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังมืด */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
 
 /* จัดการเนื้อหา Popup */
-.popup-content {
+.popup_content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     border: 0.5px solid #AB0A10;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 300px; /* กำหนดขนาดหน้าต่าง */
+    width: 30%; /* กำหนดขนาดหน้าต่าง */
     position: relative;
 }
 
+.popup_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    // background-color: #AB0A10;
+}
+
+.popup_submit {
+    position: relative;
+    left: 75%;
+    background-color: #AB0A10;
+}
+
+.popup_submit:hover {
+    position: relative;
+    left: 75%;
+    background-color: #ff6262 !important;
+}
+
+.popup_info {
+    display: flex;
+    align-items: center;
+    // background-color: green;
+    justify-content: space-between;
+    height: 40px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.popup_user {
+    display: flex;
+    align-items: center;
+}
 /* ปุ่มใน Popup */ 
 button {
     margin-top: 10px;
 }
 
-//ลองทำ card
-.comment-card {
-    background-color: #1c1c1c;
-    border-radius: 10px;
-    padding: 20px;
-    color: #fff;
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .comment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  
-  .comment-info {
-    flex-grow: 1;
-  }
-  
-  .comment-name {
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
-  .comment-date {
-    font-size: 12px;
-    color: #aaa;
-  }
-  
-  .comment-rating {
-    display: flex;
-    align-items: center;
-    color: #fff;
-  }
-  
-  .stars {
-    color: red;
-    margin-right: 5px;
-  }
-  
-  .rating {
-    font-size: 14px;
-  }
-  
-  .comment-body {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .star-rating {
-    position: relative;
-    display: inline-block;
-    font-size: 24px; /* ขนาดของดาว */
-    color: #ccc; /* สีของดาวเงา */
-  }
-  
-  .star-background {
-    position: relative;
-    z-index: 1;
-    color: #ccc; /* สีของดาวที่เป็นเงา */
-  }
-  
-  .star-foreground {
-    position: absolute;
+.modal_overlay {
+    position: fixed;
     top: 0;
     left: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    z-index: 2;
-    color: red; /* สีของดาวที่เต็ม */
-  }
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    width: 80%;
+    max-width: 600px;
+}
+
+.close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.movieinfo_story_detail .highlight {
+    color: #AB0A10;
+    font-weight: 600;
+    font-size: 23px;
+}
+
+.Avatar {
+    margin-right: 10px;
+}
+
+.Name {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.Rate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: #AB0A10;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.custom_textarea:focus, .custom_textarea:hover {
+    border-color: #ff4d4f !important; /* เปลี่ยนสีขอบเป็นสีแดง */
+    box-shadow: 0 0 2px rgba(255, 77, 79, 0.5); /* เพิ่มเงา */
+}
+
+.highlight {
+    color: #AB0A10;
+}
