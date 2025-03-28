@@ -4,6 +4,8 @@ import axios from "../../config/axios";
 import { notification, Form, Input, Button } from "antd";
 import localStorage from "../../services/localStorageService";
 import { useNavigate } from "react-router-dom";
+import image from "../../component/images/cf2630c2-1313-47e6-9de0-1131e4c36f45-Photoroom.png"
+import image2 from "../../component/images/pngtree-movie-film-roll-black-and-white-png-image_6123879-Photoroom.png"
 
 const layout = {
   labelCol: { span: 8 },
@@ -71,6 +73,8 @@ const Login = ({ closeModal, setRole, setIsLoggedIn, setIsRegisterMode }) => {
         <div className={styles.modal_content_info}>
           <div className={styles.modal_content_info_header}>Sign in Account</div>
           <div>ลงทะเบียนบัญชีของคุณ</div>
+          <img src={image} className={styles.popcorn}></img>
+          <img src={image2} className={styles.film}></img>
         </div>
         <div className={styles.modal_content_input}>
           <Form form={form} {...layout} onFinish={handleSubmit}>

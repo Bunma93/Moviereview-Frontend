@@ -2,13 +2,13 @@
 
 .container {
     display: flex;
-    // background-color: aqua;
+    background-color: rgb(255, 255, 255);
     width: 100%;
-    box-shadow: inset 0.5px solid black;
+    box-shadow: inset 10px solid black;
+    flex-wrap: wrap;
 }
 .about {
     font-family: "Roboto", serif;
-    // background-color: aquamarine;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,8 +37,16 @@
 }
 
 .Logo {
-    width: 600px;
-    height: auto;
+    width: clamp(600px, 20vw ,200px);
     padding: 100px;
     margin-left: 100px;
+}
+
+@media (max-width: 500px) {
+    .Logo {
+        width: 400px;
+        margin-left: 0;
+        padding: 50px;
+        border: 0.5px solid #AB0A10;
+    }
 }

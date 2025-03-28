@@ -17,7 +17,6 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
 
   const navigate = useNavigate();
 
-  const clientId = "1055771314509-sdpcmjtr5812hfkhu90ljd2k6n04sgoq.apps.googleusercontent.com";
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -30,10 +29,12 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
 
   useEffect(() => {
     // สมมติว่า access token ถูกเก็บไว้ใน localStorage
-    const accessToken = localStorage.getItem('accessToken');
-    
+    const accessToken = localStorage.getItem('ACCESS_TOKEN');
+    console.log("Token", accessToken);
+  
     if (accessToken) {
       setIsLoggedIn(true); // ตั้งค่าเป็น true ถ้ามี access token
+      setIsModalOpen(false);
     } else {
       setIsLoggedIn(false); // ตั้งค่าเป็น false ถ้าไม่มี access token
     }
@@ -51,7 +52,7 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
     <div>
       <div className="Navbar">
         <div className="Navbar-Logo">
-          <img src="/image/Logo.png" alt="ThaiReview" width="100" height="67" />
+          <img src="/image/Logo.png" alt="ThaiReview" className="Logo"/>
         </div>
         <nav className="Navbar-link">
           <li>
@@ -63,18 +64,8 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
           <li>
             <Link to="/profile">Profile</Link>
           </li>
-          <li onClick={handleLoginLogoutClick} className="Navbar-Login">
-          <span
-            style={{
-              cursor: "pointer",
-              color: "white",
-              fontSize: "24px",
-              marginLeft: "59px",
-              fontWeight: "regular",
-            }}
-          >
-              {isLoggedIn ? "Logout" : "Login"}
-            </span>
+          <li onClick={handleLoginLogoutClick} className="Navbar-link user-button">
+            <span className="user-text"> {isLoggedIn ? "Logout" : "Login"} </span>
             <i className="fa-regular fa-user"></i>
           </li>
         </nav>

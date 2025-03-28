@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import styles from '../component/movieposter.module.scss'
+import styles from './movieposter.module.scss'
 
-function Movieposter({moviename, moviepic, moviedate, movieage, movielang}) {
+function Movieposter({moviename, moviepic, moviedate, movieage, movielang = []}) {
     console.log("moviepic:", moviepic);
-    console.log("movielang", movielang)
+    console.log("movielang หน้าโปสเตอร์", movielang)
     const imageUrl = moviepic ? `http://localhost:8000/${moviepic}` : "";
 
     console.log("Image URL:", imageUrl); // ตรวจสอบ URL ของภาพ
@@ -14,7 +14,7 @@ function Movieposter({moviename, moviepic, moviedate, movieage, movielang}) {
         day: '2-digit',
     }).format(date);
 
-    const movielangArr = Array.isArray(movielang) ? movielang : []; // ถ้าไม่ใช่ array จะกำหนดเป็น array ว่าง
+    const movieLangArray = Array.isArray(movielang) ? movielang : (typeof movielang === "string" ? movielang.split(',') : []);
     return (
         <div>
             <div className={styles.Movie_List}>
@@ -27,13 +27,12 @@ function Movieposter({moviename, moviepic, moviedate, movieage, movielang}) {
                 <div className={styles.Movie_List_Date}>{formattedDate}</div>
                 <div className={styles.Movie_List_Age}>{movieage}</div>
                 <div className={styles.Movie_List_Lang}>
-                {movielangArr.length > 0 ? (
-                        movielangArr.map((item, index) => (
+                    {movieLangArray
+                        .filter(item => item !== undefined && item !== null)
+                        .map((item, index) => (
                             <div key={index}>{item}</div>
                         ))
-                    ) : (
-                        <div>No languages available</div> // แสดงข้อความหากไม่มีภาษาหรือไม่ใช่ array
-                    )}
+                    }
                 </div>
             </div>
         </div>

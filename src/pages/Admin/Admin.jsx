@@ -6,10 +6,12 @@ import {
     SettingOutlined,
     UserOutlined,
     VideoCameraOutlined,
+    FileDoneOutlined
   } from '@ant-design/icons';
 import { Button, Layout, Menu} from "antd";
 import AdminMovieForm from './AdminMovieForm';
 import AdminActorForm from './AdminActorForm';
+import AdminNewsForm from './AdminNewsForm/AdminNewsForm';
 
 const Settings = () => <h1>ตั้งค่า</h1>;
 
@@ -31,7 +33,7 @@ function Admin() {
           items={[
               { key: "actors", icon: <UserOutlined />, label: "นักแสดง" },
               { key: "movies", icon: <VideoCameraOutlined />, label: "ข้อมูลหนัง" },
-              { key: "settings", icon: <SettingOutlined />, label: "ตั้งค่า" },
+              { key: "news", icon: <FileDoneOutlined />, label: "ข่าว" },
           ]}
         />
       </Sider>
@@ -65,7 +67,7 @@ function Admin() {
         >
             {selectedForm === "actors" && <AdminActorForm/>}
             {selectedForm === "movies" && <AdminMovieForm/>}
-            {selectedForm === "settings" && <Settings />}
+            {selectedForm === "news" && <AdminNewsForm />}
         </Content>
       </Layout>
     </Layout>

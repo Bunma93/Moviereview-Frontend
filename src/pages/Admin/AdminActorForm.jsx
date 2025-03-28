@@ -5,13 +5,25 @@ import axios from '../../config/axios';
 import styles from './AdminActorForm.module.scss';
 import moment from 'moment';
 
+const { Option } = Select;
+
 const AdminActorForm = () => {
   const [actorList, setactorList] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [movie, setmovieList] = useState([]);
+  const [selectedMovies, setSelectedMovies] = useState([]);
+
 
   const filteredActors = actorList.filter(actor =>
     actor.actorname.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const fetchmovieList = async () => {
+    const httpResponse = await axios.get("/movie")
+    console.log("🔍 Response ทั้งหมด:", httpResponse);  // ดูทั้งหมด
+    console.log("📌 Data ที่ได้จาก API:", httpResponse.data);  // ดูเฉพาะ data
+    setmovieList(httpResponse.data);
+  };
 
   const fetchactorList = async () => {
     const httpResponse = await axios.get("/actor")
@@ -22,6 +34,7 @@ const AdminActorForm = () => {
 
   useEffect(() => {
     fetchactorList();
+    fetchmovieList();
   },[]);
 
   const [form] = Form.useForm();
@@ -48,6 +61,10 @@ const AdminActorForm = () => {
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
+
+    if (selectedMovies.length > 0) {
+      formData.append("movieIds", JSON.stringify(selectedMovies)); // ต้องแปลงเป็น JSON String
+    }
 
     if (actorFile) formData.append('actorimagePath', actorFile);
    
@@ -86,12 +103,17 @@ const AdminActorForm = () => {
   const [selectedActor, setSelectedActor] = useState(null);
   const [formEdit] = Form.useForm();
 
-  const handleEdit = (id) => {
-    const actor = actorList.find(actor => actor.id === id);
+  const handleEdit = async (id) => {
+    const response = await axios.get(`/actor/${id}`);
+    const actor = response.data;
+
     if (!actor) {
       message.error("ไม่พบนักแสดงที่ต้องการแก้ไข");
       return;
     }
+
+    const selectedMovieIds = actor.Movies ? actor.Movies.map(movie => movie.id) : [];
+    console.log("หนังที่เลือก", selectedMovieIds)
 
     setSelectedActor(actor);
     setIsEditModalOpen(true);
@@ -101,6 +123,7 @@ const AdminActorForm = () => {
       birthdate: actor.birthdate ? moment(actor.birthdate) : null,
       country: actor.country,
       role: actor.role,
+      movieIds: selectedMovieIds
     });
 
     if (actor.actorimagePath) {
@@ -134,6 +157,10 @@ const AdminActorForm = () => {
         formData.append(key, values[key]);
       }
     });
+
+     if (selectedMovies.length > 0) {
+      formData.append("movieIds", JSON.stringify(selectedMovies)); // ต้องแปลงเป็น JSON String
+    }
 
     if (actorFile) {
       formData.append("actorimagePath", actorFile);
@@ -169,8 +196,8 @@ const AdminActorForm = () => {
           message.error("เกิดข้อผิดพลาดในการลบ");
         }
       }
-  })
-} 
+    })
+  } 
 
   return (
     <div>
@@ -204,6 +231,20 @@ const AdminActorForm = () => {
               <Select.Option value="actor">นักแสดง</Select.Option>
             </Select>
           </Form.Item>
+
+          <Form.Item label="หนังที่แสดง" name="movieIds">
+                <Select
+                    mode="multiple"
+                    placeholder="เลือกหนัง"
+                    onChange={setSelectedMovies}
+                >
+                    {movie.map(movie => (
+                        <Option key={movie.id} value={movie.id}>
+                            {movie.title}
+                        </Option>
+                    ))}
+                </Select>
+            </Form.Item>
 
           <Form.Item label="อัปโหลดภาพนักแสดง/ผู้กำกับ" name="actorimagePath">
             <Upload 
@@ -243,6 +284,20 @@ const AdminActorForm = () => {
               <Select.Option value="director">ผู้กำกับ</Select.Option>
               <Select.Option value="actor">นักแสดง</Select.Option>
             </Select>
+        </Form.Item>
+
+        <Form.Item label="หนังที่แสดง">
+              <Select
+                  mode="multiple"
+                  placeholder="เลือกหนัง"
+                  onChange={setSelectedMovies}
+              >
+                  {movie.map(movie => (
+                      <Option key={movie.id} value={movie.id}>
+                          {movie.title}
+                      </Option>
+                  ))}
+              </Select>
         </Form.Item>
 
         <Form.Item label="อัปโหลดภาพนักแสดง/ผู้กำกับ" name="actorimagePath" rules={[{ required: true, message: 'กรุณาอัพโหลดรูปภาพ' }]}>

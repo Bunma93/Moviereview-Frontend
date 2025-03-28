@@ -109,6 +109,7 @@ const AdminMovieForm = () => {
 
     formEdit.setFieldsValue({
       title: movie.title,
+      engTitle: movie.engTitle,
       date: movie.date ? moment(movie.date) : null,
       description: movie.description,
       Atcinema: movie.Atcinema,
@@ -224,7 +225,11 @@ const AdminMovieForm = () => {
           onFinish={handleUpdate}
           layout="vertical"
         >
-         <Form.Item label="ชื่อภาพยนตร์" name="title" rules={[{ required: true, message: 'กรุณากรอกชื่อภาพยนตร์' }]}>
+         <Form.Item label="ชื่อภาพยนตร์(ภาษาไทย)" name="title" rules={[{ required: true, message: 'กรุณากรอกชื่อภาพยนตร์' }]}>
+          <Input placeholder="ใส่ชื่อภาพยนตร์" />
+        </Form.Item>
+
+        <Form.Item label="ชื่อภาพยนตร์ (ภาษาอังกฤษ)" name="engTitle" rules={[{ required: true, message: 'กรุณากรอกชื่อภาพยนตร์' }]}>
           <Input placeholder="ใส่ชื่อภาพยนตร์" />
         </Form.Item>
 
@@ -305,6 +310,10 @@ const AdminMovieForm = () => {
 
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item label="ชื่อภาพยนตร์" name="title" rules={[{ required: true, message: 'กรุณากรอกชื่อภาพยนตร์' }]}>
+          <Input placeholder="ใส่ชื่อภาพยนตร์" />
+        </Form.Item>
+
+        <Form.Item label="ชื่อภาพยนตร์ (ภาษาอังกฤษ)" name="engTitle" rules={[{ required: true, message: 'กรุณากรอกชื่อภาพยนตร์' }]}>
           <Input placeholder="ใส่ชื่อภาพยนตร์" />
         </Form.Item>
 
