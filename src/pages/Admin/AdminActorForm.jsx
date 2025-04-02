@@ -4,7 +4,6 @@ import { PlusOutlined, UserOutlined } from '@ant-design/icons';
 import axios from '../../config/axios';
 import styles from './AdminActorForm.module.scss';
 import moment from 'moment';
-
 const { Option } = Select;
 
 const AdminActorForm = () => {
@@ -339,7 +338,7 @@ const AdminActorForm = () => {
                 <button className={styles.deleteButton} onClick={() => handleDelete(list.id)}>🗑️</button>
               </div>
             </div>
-          <p>{list.actorname}</p>
+            <p>{list.actorname}</p>
             </div>
             );
           })}

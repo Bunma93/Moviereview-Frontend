@@ -1,7 +1,9 @@
 .actorContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: auto;
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 .actorProfile {

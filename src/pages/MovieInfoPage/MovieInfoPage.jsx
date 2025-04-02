@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styles from "../MovieInfoPage/MovieInfoPage.module.scss"
 import Movieactor from "../../component/movieActor/movieActor";
 import CommentCard from "../../component/Comment/Comment";
+import Footer from "../../component/Footer/Footer"
 import _ from "lodash";
 import axios from "../../config/axios";
 import { Form, Input, Button, Rate, message, Avatar } from 'antd';
@@ -17,6 +18,8 @@ import 'swiper/scss/autoplay'
 function MovieInfoPage() {
     const { id } = useParams();
     const [movie, setMovie] = useState([]);
+    const [actors, setActors] = useState([]);
+    const [director, setDirector] = useState([]);
     const [languageArray,setLanguageArray] = useState([]);
     const [imageArray, setImageArray] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -38,6 +41,11 @@ function MovieInfoPage() {
                 const data = response.data;
                 console.log("API Response:", data);
                 setMovie(data);
+                const director = data.Actors.filter(actor => actor.role === 'director');
+                const actors = data.Actors.filter(actor => actor.role === 'actor');
+                setActors(actors);
+                setDirector(director);
+                console.log("ผู้กับกำหนัง",director)
 
             if (data.backgroundimagePath) {
                 const images = JSON.parse(data.backgroundimagePath).map(path => 
@@ -243,43 +251,42 @@ function MovieInfoPage() {
                     <div className={styles.movieinfo_story_detail} dangerouslySetInnerHTML={{ __html: safeDescription }}></div>
                 </div>
             </div>
-            <div>
-                <div className={styles.movieinfo_actor}>
-                    <div className={styles.movieinfo_actor_header}>นักแสดงนำ</div>
-                    <div className={styles.movieinfo_actor_pic}>
-                        <Swiper
-                            // install Swiper modules
-                            key={"Actor"}
-                            modules={[Navigation, Scrollbar, A11y, Autoplay]}
-                            spaceBetween={20}
-                            slidesPerView={7}
-                            navigation
-                            scrollbar={{ draggable: true }}
-                            observer={true}         // ✅ ให้ Swiper อัปเดตเมื่อ DOM เปลี่ยนแปลง
-                            observeParents={true}   // ✅ ให้ตรวจสอบ DOM ระดับพ่อแม่ด้วย
-                            breakpoints={{
-                                320: { slidesPerView: 1, spaceBetween: 10 },  // หน้าจอเล็ก (มือถือ)
-                                768: { slidesPerView: 2, spaceBetween: 15 },  // Tablet
-                                1024: { slidesPerView: 2.5, spaceBetween: 20 }, 
-                                1280: { slidesPerView: 7, spaceBetween: 0 }, // ค่าปกติที่ตั้งไว้
-                                1900: { slidesPerView: 8, spaceBetween: 0 }, 
-                            }}
-                        >
-                            {movie && movie.Actors ? (
-                                movie.Actors.map ((list)=> (
-                                    <SwiperSlide key={list.id} className={styles.SwiperSlide}>
-                                        <Movieactor actorpic={list.actorimagePath} actorname={list.actorname}/>
-                                    </SwiperSlide>
-                                ))
-                                ) : (
-                                <p>Loading...</p>
-                            )}
-                        </Swiper>
-                    </div>
+
+            <section className={styles.movieinfo_actor}>
+                <div className={styles.movieinfo_actor_header}>นักแสดงนำ</div>
+                <div className={styles.movieinfo_actor_pic}>
+                    <Swiper
+                        // install Swiper modules
+                        key={"Actor"}
+                        modules={[Navigation, Scrollbar, A11y, Autoplay]}
+                        spaceBetween={20}
+                        slidesPerView={7}
+                        navigation
+                        // scrollbar={{ draggable: true }}
+                        observer={true}         // ✅ ให้ Swiper อัปเดตเมื่อ DOM เปลี่ยนแปลง
+                        observeParents={true}   // ✅ ให้ตรวจสอบ DOM ระดับพ่อแม่ด้วย
+                        breakpoints={{
+                            320: { slidesPerView: 1, spaceBetween: 10 },  // หน้าจอเล็ก (มือถือ)
+                            768: { slidesPerView: 2, spaceBetween: 15 },  // Tablet
+                            1024: { slidesPerView: 2.5, spaceBetween: 20 }, 
+                            1280: { slidesPerView: 7, spaceBetween: 0 }, // ค่าปกติที่ตั้งไว้
+                            1900: { slidesPerView: 8, spaceBetween: 0 }, 
+                        }}
+                    >
+                        {movie && actors ? (
+                            actors.map ((list)=> (
+                                <SwiperSlide key={list.id} className={styles.SwiperSlide}>
+                                    <Movieactor actorpic={list.actorimagePath} actorname={list.actorname}/>
+                                </SwiperSlide>
+                            ))
+                            ) : (
+                            <p>Loading...</p>
+                        )}
+                    </Swiper>
                 </div>
-            </div>
+            </section>
             
-            <div className={styles.movieinfo_container}>
+            <section className={styles.movieinfo_container}>
                 <div className={styles.movieinfo_review}>
                     <div className={styles.movieinfo_review_header}>
                         <h1>Reviews</h1>
@@ -355,9 +362,6 @@ function MovieInfoPage() {
                         ))}
                         </div>
                     </div>
-                    <div>
-                        footer
-                    </div>
                 </div>
                 
                 <div className={styles.movieinfo_data}>
@@ -408,7 +412,7 @@ function MovieInfoPage() {
                     <div className={styles.movieinfo_data_container}>
                         <div className={styles.movieinfo_data_header}>
                             <div className={styles.movieinfo_data_icon}>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAACN0lEQVR4nO2dzW7TQBRGvSjPQpF4QVbeQwM7637KcxSegQ0LyotAkYjIYtAIL/ixQ0nj+03ic6S7tefOmfniNoqn6wAAAAAAAAAAAB7Idrt9FhGvI+JTRHyVVC654mePd5I2kq5tC0XSE0lvJO3dkyJf1d43fd9fOSb/XQMTUFqoiHibKmFc+fbG1VZt0jJ/5bFTZmo/DMPTxQWw+nVIws3iAurTTgOrrTRad4sLkHTfQKOlxYqILxkCDg6iu3Dk7t8+ADP2/u0DMGPv3z4AM/b+swegh38Ivjjx9Sb7QYBmJ2s3DMNzBPh2QJH0of6fih3gE1D+FUVE0PICdoeiCAHLCyiHoggBOQLKXBQhIE/AbiqKEHAC+r6/kvT+FE9F/8vq/g6Yo34hHhHfHvtUdHb92wfwC3VyH/tUdHb92wdgjiJ7//YBHB9FR9XE/RBwZBQhoIEoKuyAM4ui7u/7EEGZUTRxDwRkRtGf90BAchRNXJ8dkBlFE9dGgBMEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkErF1AfTnpqX+HpcupzxkCeHWxZgV8XFzAeHKEe6WVRutlhoBrXl+vqcn/nvL6+lECu0C/C4iIV13y73FvG9jypZG6TT9HZpSwWflpGvu68tMnf+Iz4WY82mkNZwvc117rxKdlPgAAAAAAAAAAdJfAD3AAZiuw2PCtAAAAAElFTkSuQmCC" alt="option"></img>
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAACN0lEQVR4nO2dzW7TQBRGvSjPQpF4QVbeQwM7637KcxSegQ0LyotAkYjIYtAIL/ixQ0nj+03ic6S7tefOmfniNoqn6wAAAAAAAAAAAB7Idrt9FhGvI+JTRHyVVC654mePd5I2kq5tC0XSE0lvJO3dkyJf1d43fd9fOSb/XQMTUFqoiHibKmFc+fbG1VZt0jJ/5bFTZmo/DMPTxQWw+nVIws3iAurTTgOrrTRad4sLkHTfQKOlxYqILxkCDg6iu3Dk7t8+ADP2/u0DMGPv3z4AM/b+swegh38Ivjjx9Sb7QYBmJ2s3DMNzBPh2QJH0of6fih3gE1D+FUVE0PICdoeiCAHLCyiHoggBOQLKXBQhIE/AbiqKEHAC+r6/kvT+FE9F/8vq/g6Yo34hHhHfHvtUdHb92wfwC3VyH/tUdHb92wdgjiJ7//YBHB9FR9XE/RBwZBQhoIEoKuyAM4ui7u/7EEGZUTRxDwRkRtGf90BAchRNXJ8dkBlFE9dGgBMEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkEmEGAGQSYQYAZBJhBgBkErF1AfTnpqX+HpcupzxkCeHWxZgV8XFzAeHKEe6WVRutlhoBrXl+vqcn/nvL6+lECu0C/C4iIV13y73FvG9jypZG6TT9HZpSwWflpGvu68tMnf+Iz4WY82mkNZwvc117rxKdlPgAAAAAAAAAAdJfAD3AAZiuw2PCtAAAAAElFTkSuQmCC" alt="option"></img>
                             </div>
                             <span>ประเภทหนัง</span>
                         </div>
@@ -420,14 +424,20 @@ function MovieInfoPage() {
                         <div className={styles.movieinfo_data_header}>
                             <span>ผู้กำกับ</span>
                         </div>
-                        <div className={styles.movieinfo_data_director}>
-                            <div className={styles.movieinfo_data_director_image}>
-                                <img src="#"></img>
+                        <div>
+                            {director.map((list) => {
+                                let directorImage = `http://localhost:8000/${list.actorimagePath}`
+                                return (
+                            <div className={styles.movieinfo_data_director}>
+                                <div className={styles.movieinfo_data_director_image}>
+                                    <img src={directorImage}></img>
+                                </div>
+                                <div className={styles.movieinfo_data_director_info}>
+                                    <div className={styles.movieinfo_data_director_name}>{list.actorname}</div>
+                                    <div className={styles.movieinfo_data_director_role}>จากประเทศ{list.country}</div>
+                                </div>
                             </div>
-                            <div>
-                                <div className={styles.movieinfo_data_director_name}>บรรจง ปิสัญธนะกุล</div>
-                                <div className={styles.movieinfo_data_director_role}>จากประเทศไทย</div>
-                            </div>
+                            )})}
                         </div>
                     </div>
                     <div className={styles.movieinfo_data_container}>
@@ -445,7 +455,8 @@ function MovieInfoPage() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+            <Footer/>
         </div>
     )
 }

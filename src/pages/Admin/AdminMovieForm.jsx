@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, DatePicker, Switch, Button, Upload, message , Divider, Avatar, Space, Modal} from 'antd';
+import { Form, Input, DatePicker, Switch, Button, Upload, message , Divider, Avatar, Space, Modal, Select} from 'antd';
 import { PlusOutlined, UserOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import axios from '../../config/axios';
 import styles from './AdminMovieForm.module.scss';
 import moment from 'moment';
+const { Option } = Select;
 
 const AdminMovieForm = () => {
   const [form] = Form.useForm();
@@ -11,6 +12,8 @@ const AdminMovieForm = () => {
   const [backgroundFile, setBackgroundFile] = useState([]);// รองรับหลายไฟล์
   const [posterFileList, setPosterFileList] = useState([]);
   const [backgroundFileList, setBackgroundFileList] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState([])
+  const [genre, setGenre] = useState([]);
 
   const [movieList, setmovieList] = useState([])
   const [searchText, setSearchText] = useState("");
@@ -26,8 +29,20 @@ const AdminMovieForm = () => {
     setmovieList(httpResponse.data);
   };
 
+  const fetchGenreList = async () => {
+    try {
+      const httpResponse = await axios.get("/genre");
+      console.log("fetch Genre Response ทั้งหมด:", httpResponse);
+      console.log("fetch Genre Data ที่ได้จาก API:", httpResponse.data);
+      setGenre(httpResponse.data);
+    } catch (error) {
+      console.error("Error fetching genre:", error);
+    }
+  };
+
   useEffect(() => {
       fetchmovieList();
+      fetchGenreList();
     },[]);
   
   const handlePosterChange = ({ fileList }) => {
@@ -59,6 +74,11 @@ const AdminMovieForm = () => {
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
+
+    if (selectedGenre.length > 0) {
+      console.log(selectedGenre)
+      formData.append("genreIds", JSON.stringify(selectedGenre));
+    }
 
     if (posterFile) formData.append('posterimagePath', posterFile);
     if (backgroundFile) backgroundFile.forEach((file) => {
@@ -95,17 +115,22 @@ const AdminMovieForm = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [formEdit] = Form.useForm();
 
-  const handleEdit = (id) => {
+  const handleEdit = async (id) => {
     const movie = movieList.find(movie => movie.id === id);
     if (!movie) {
       message.error("ไม่พบภาพยนต์ที่ต้องการแก้ไข");
       return;
     }
+    const response = await axios.get(`/movie/${id}`);
+    const genre = response.data;
+    const selectedGenreIds = genre.Genres ? genre.Genres.map(genre => genre.id) : [];
+    console.log("หนังที่เลือก", selectedGenreIds)
 
     setSelectedMovie(movie);
     setIsEditModalOpen(true);
 
     const langs = Array.isArray(movie.lang) ? movie.lang : JSON.parse(movie.lang || "[]");
+    console.log(typeof langs);
 
     formEdit.setFieldsValue({
       title: movie.title,
@@ -115,7 +140,8 @@ const AdminMovieForm = () => {
       Atcinema: movie.Atcinema,
       age: movie.age,
       lang: langs,
-      trailerUrl:movie.trailerUrl
+      trailerUrl: movie.trailerUrl,
+      genreIds : selectedGenreIds
     })
 
     if (movie.posterimagePath) {
@@ -163,6 +189,12 @@ const AdminMovieForm = () => {
         formData.append(key, values[key]);
       }
     });
+
+    if (selectedGenre.length > 0) {
+      console.log("ประเถทหนังที่เลือก", selectedGenre)
+      formData.append("genreIds", JSON.stringify(selectedGenre));
+      console.log("ประเถทหนังที่เลือก", JSON.stringify(selectedGenre));
+    }
 
     if (posterFile) {
       formData.append("posterimagePath", posterFile);
@@ -280,6 +312,21 @@ const AdminMovieForm = () => {
         </Form.List>
       </Form.Item>
 
+       <Form.Item label="ประเภทหนัง" name="genreIds">
+                <Select
+                    mode="multiple"
+                    placeholder="เลือกประเภทหนัง"
+                    onChange={setSelectedGenre}
+                >
+                    {genre.map(genre => (
+                        <Option key={genre.id} value={genre.id}>
+                            {genre.genreName}
+                        </Option>
+                    ))}
+                </Select>
+        </Form.Item> 
+ 
+
       <Form.Item label="อัปโหลดภาพโปสเตอร์" name="posterimagePath">
           <Upload 
             listType="picture-card" 
@@ -363,6 +410,20 @@ const AdminMovieForm = () => {
           )}
         </Form.List>
       </Form.Item>
+
+      <Form.Item label="ประเภทหนัง">
+                <Select
+                    mode="multiple"
+                    placeholder="เลือกประเภทหนัง"
+                    onChange={setSelectedGenre}
+                >
+                    {genre.map(genre => (
+                        <Option key={genre.id} value={genre.id}>
+                            {genre.genreName}
+                        </Option>
+                    ))}
+                </Select>
+        </Form.Item> 
 
         <Form.Item label="อัปโหลดภาพโปสเตอร์" name="posterimagePath" rules={[{ required: true, message: 'กรุณาอัพโหลดรูปภาพ' }]}>
           <Upload 

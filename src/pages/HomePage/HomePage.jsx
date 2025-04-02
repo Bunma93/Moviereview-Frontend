@@ -215,7 +215,7 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                         key={"now-showing"}
                         modules={[Navigation, Scrollbar, A11y, Autoplay]}
                         spaceBetween={26}
-                        slidesPerView={4}
+                        slidesPerView={6}
                         navigation
                         loop={true}
                         scrollbar={{ draggable: true }}
@@ -229,8 +229,8 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                             320: { slidesPerView: 1, spaceBetween: 10 },  // หน้าจอเล็ก (มือถือ)
                             768: { slidesPerView: 2, spaceBetween: 15 },  // Tablet
                             1024: { slidesPerView: 2.5, spaceBetween: 20 }, 
-                            1280: { slidesPerView: 4, spaceBetween: 26 }, // ค่าปกติที่ตั้งไว้
-                            1900: { slidesPerView: 5, spaceBetween: 30 }, 
+                            1280: { slidesPerView: 5, spaceBetween: 35 }, // ค่าปกติที่ตั้งไว้
+                            1900: { slidesPerView: 6, spaceBetween: 30 }, 
                         }}
                     >
                         
@@ -277,7 +277,7 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                         key={"old-movies"}
                         modules={[Navigation, Scrollbar, A11y, Autoplay]}
                         spaceBetween={26}
-                        slidesPerView={4}
+                        slidesPerView={5}
                         navigation
                         loop={true}
                         scrollbar={{ draggable: true }}
@@ -291,8 +291,8 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                             320: { slidesPerView: 1, spaceBetween: 10 },  // หน้าจอเล็ก (มือถือ)
                             768: { slidesPerView: 2, spaceBetween: 15 },  // Tablet
                             1024: { slidesPerView: 2.5, spaceBetween: 20 }, 
-                            1280: { slidesPerView: 4, spaceBetween: 26 }, // ค่าปกติที่ตั้งไว้
-                            1900: { slidesPerView: 5, spaceBetween: 30 }, 
+                            1280: { slidesPerView: 5, spaceBetween: 26 }, // ค่าปกติที่ตั้งไว้
+                            1900: { slidesPerView: 6, spaceBetween: 30 }, 
                         }}
                     >
                         {movielist.map((list, index) =>{

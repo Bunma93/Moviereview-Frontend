@@ -1,6 +1,9 @@
 .actorContainer {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: auto;
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 .actorProfile {
@@ -12,7 +15,7 @@
 }
 
 .actorPicture {
-    background-color: aquamarine;
+    // background-color: aquamarine;
 }
 
 .avatarWrapper {

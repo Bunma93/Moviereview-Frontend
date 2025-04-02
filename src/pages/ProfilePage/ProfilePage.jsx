@@ -27,7 +27,6 @@ function ProfilePage() {
         <div>
             <div className="coverPage-Profile">
                 <img src="userProfile.posterimagePath" />
-                <CoverPageCarousel/>
             </div>
             <div>
                 <Avatar size={200} icon={<UserOutlined />} src={imageUrl}/>
