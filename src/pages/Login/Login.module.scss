@@ -11,6 +11,7 @@
   z-index: 1000;
   backdrop-filter: blur(2px);
   animation: fadeIn 0.3s ease-in-out;
+  overflow-y: scroll;
 }
 
 // Animation ตอน Modal แสดงผล

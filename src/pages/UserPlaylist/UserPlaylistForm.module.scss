@@ -1,0 +1,206 @@
+.container {
+    position:absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    width: 65%;
+    border-radius: 8px;
+    zoom: 65%;
+}
+
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(1.05);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+
+.createPlaylist {
+    height: auto;
+    border: 0.5px solid #AB0A10;
+    height: auto;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    &_container {
+        position: relative;
+        overflow: hidden;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    &_Pic {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    &_Name {
+        margin-left: 8.5px;
+        font-size: 20px;
+    }
+}
+
+.playlistName {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    &_Header {
+        color: #B51111;
+    }
+    &_Name {
+        margin-left: 5px;
+    }
+}
+
+.inputPlaylistName {
+    border: none;
+    padding: 0px 5px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.date {
+    color: #999;
+    font-weight: 300;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.countMovies {
+    display: inline-block;
+    color: #AB0A10;
+    margin: 0px 2px;
+    font-size: 20px;
+}
+.movieGrid {
+    display: flex;
+    flex-wrap: wrap;
+    height: 450px;
+    padding: 30px;
+    border: 0.5px solid rgb(213, 213, 213);
+    border-radius: 10px;
+    display: flex;
+    zoom: 75%;
+}
+
+.movieContainer {
+    display: flex;
+    flex-wrap: wrap;
+    height: 450px;
+    padding: 30px;
+    zoom: 75%;
+    border: 0.5px solid rgb(213, 213, 213);
+    border-radius: 10px;
+
+    overflow: auto;
+
+    /* Scrollbar แนวตั้ง */
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #888; 
+        border-radius: 10px;
+        border: 2px solid #f0f0f0; 
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+    }
+    
+}
+.submitPlaylist_container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.submitPlaylist {
+    font-size: 20px;
+    font-weight: 600;
+    color: #FFF;
+    background-color: #AB0A10;
+    border-radius: 5px;
+    padding: 8px 25px;
+    border: none;
+}
+
+.movieSearch {
+    .ant-input-affix-wrapper {
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+    
+      .ant-input-affix-wrapper-focused {
+        border-color: #AB0A10 !important;
+        box-shadow: 0 0 0 2px rgba(171, 10, 16, 0.2);
+      }
+}
+
+.movieCard {
+    position: relative;
+    outline: none;
+    padding: 2px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.2s;
+    margin-top: 10px;
+    margin-right: 26px;
+  }
+  
+  .selected {
+    position: relative;
+    outline: 5px solid #AB0A10;
+    box-shadow: 0 0 8px #a43c0466;
+    transition: all 0.2s ease;
+  }
+
+  .selected::after {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: #1890ff;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 14px;
+    box-shadow: 0 0 6px #1890ff88;
+    z-index: 2;
+  }

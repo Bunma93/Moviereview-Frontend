@@ -23,8 +23,8 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
   const navigate = useNavigate(); // ใช้สำหรับเปลี่ยนหน้า
 
   const [previewImage, setPreviewImage] = useState(null); // เก็บ URL ของรูปที่เลือก
-  const [userImagefileList, setuserImageFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
-  const [userBackgroundfileList, setBackgroundFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
+  const [userImageFileList, setuserImageFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
+  const [userBackgroundFileList, setBackgroundFileList] = useState([]); // เก็บไฟล์ที่อัปโหลด
 
   const openNotification = (type, message, description) => {
     notification[type]({
@@ -38,7 +38,9 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
   };
 
    // ฟังก์ชันอัปเดตรูปที่เลือกและแสดงตัวอย่าง
-   const handleUserImageChange = async ({ userImagefileList: newFileList }) => {
+   const handleUserImageChange = async (info) => {
+    const newFileList = info?.fileList || [];
+
     if (newFileList.length > 0) {
       const file = newFileList[0].originFileObj;
       const imagePreview = await getBase64(file);
@@ -49,7 +51,9 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
     setuserImageFileList(newFileList);
   };
 
-   const handleUserBackgroundChange = async ({ userBackgroundfileList: newFileList }) => {
+   const handleUserBackgroundChange = async (info) => {
+    const newFileList = info?.fileList || [];
+
     if (newFileList.length > 0) {
       const file = newFileList[0].originFileObj;
       const imagePreview = await getBase64(file);
@@ -68,8 +72,12 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
       }
     });
 
-    if (userImagefileList.length > 0) {
-      formData.append('userimagePath', userImagefileList[0].originFileObj);
+    if (userImageFileList.length > 0) {
+      formData.append('userimagePath', userImageFileList[0].originFileObj);
+    }
+
+    if (userBackgroundFileList.length > 0) {
+      formData.append('userBackgroundImagePath', userBackgroundFileList[0].originFileObj);
     }
 
     try {
@@ -77,17 +85,24 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       openNotification('success', 'ลงทะเบียนสำเร็จ', 'ลงทะเบียนบัญชีสำเร็จแล้ว กรุณาลงชื่อเข้าใช้');
-      navigate('/login');
+      switchToLogin();
     } catch (error) {
       const errorMsg = error.response?.data?.message || error.message;
       openNotification('error', 'ลงทะเบียนไม่สำเร็จ', errorMsg);
     }
   };
 
-  const uploadButton = (
+  const uploadProfileButton = (
     <button style={{ border: 0, background: 'none',color:"white" }} type="button">
       <PlusOutlined />
-      <div style={{ marginTop: 8, color:"white" ,fontSize:"13px"}}>อัพโหลดรูป</div>
+      <div style={{ marginTop: 8, color:"white" ,fontSize:"13px"}}>อัพโหลดรูป<br></br>โปรไฟล์</div>
+    </button>
+  );
+
+  const uploadBackgroundButton = (
+    <button style={{ border: 0, background: 'none',color:"white" }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8, color:"white" ,fontSize:"13px"}}>อัพโหลดรูป<br></br>หน้าปก</div>
     </button>
   );
 
@@ -160,26 +175,26 @@ const RegisterForm = ({ closeModal, setIsRegisterMode }) => {
             <Form.Item label="อัพโหลดรูปโปรไฟล์">
               <Upload
                 listType="picture-card"
-                fileList={userImagefileList}
+                fileList={userImageFileList}
                 onChange={handleUserImageChange}
                 maxCount={1} // จำกัดให้เลือกรูปเดียว
                 beforeUpload={() => false} // ป้องกันการอัปโหลดอัตโนมัติ
                 showUploadList={{ showPreviewIcon: true }}
               >
-                {userImagefileList.length >= 1 ? null : uploadButton}
+                {userImageFileList.length >= 1 ? null : uploadProfileButton}
               </Upload>
             </Form.Item>
 
             <Form.Item label="อัพโหลดภาพหน้าปก">
               <Upload
                 listType="picture-card"
-                fileList={userBackgroundfileList}
+                fileList={userBackgroundFileList}
                 onChange={handleUserBackgroundChange}
                 maxCount={1} // จำกัดให้เลือกรูปเดียว
                 beforeUpload={() => false} // ป้องกันการอัปโหลดอัตโนมัติ
                 showUploadList={{ showPreviewIcon: true }}
               >
-                {userBackgroundfileList.length >= 1 ? null : uploadButton}
+                {userBackgroundFileList.length >= 1 ? null : uploadBackgroundButton}
               </Upload>
             </Form.Item>
 

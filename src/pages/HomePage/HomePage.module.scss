@@ -29,7 +29,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
     width: 100%;
     height: 780px;
     overflow: hidden;
@@ -46,10 +45,16 @@
     background-color: #0000005b;
 }
 
+.movieName {
+    color: white;
+    font-size: larger;
+    z-index: 1;
+}
+
 .coverCardSlideContainer {
     // background-color: #0aab22;
     width: 100%;
-    margin-top: 260px;
+    margin-top: 250px;
 }
 .mySwiper {
     cursor: grab;
@@ -66,6 +71,8 @@
     text-align: center;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     opacity: 0.7;
+    margin-right: 0px !important;
+    width: 410px !important;
     &.swiperSlideActive {
         transform: scale(1);
         opacity: 1;
@@ -245,7 +252,7 @@
         padding-left: 15px;
         font-weight: 500;
         background: linear-gradient(90deg, rgba(171,10,16,0.25) 0%, rgba(0,0,0,0) 40%);
-} 
+    } 
    :nth-child(2) {
     font-size: 16px;
     color: rgb(255, 255, 255);
@@ -253,6 +260,10 @@
     background-color: #ab0a0f7b;
     border-radius: 10px;
     padding: 5px 15px;
+   }
+   &_Button {
+    border: none;
+    cursor: pointer;
    }
 }
 

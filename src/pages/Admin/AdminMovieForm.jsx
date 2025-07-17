@@ -190,10 +190,9 @@ const AdminMovieForm = () => {
       }
     });
 
-    if (selectedGenre.length > 0) {
-      console.log("ประเถทหนังที่เลือก", selectedGenre)
-      formData.append("genreIds", JSON.stringify(selectedGenre));
-      console.log("ประเถทหนังที่เลือก", JSON.stringify(selectedGenre));
+    const genreIds = values.genreIds;
+    if (genreIds && genreIds.length > 0) {
+      formData.append("genreIds", JSON.stringify(genreIds));
     }
 
     if (posterFile) {
@@ -316,7 +315,6 @@ const AdminMovieForm = () => {
                 <Select
                     mode="multiple"
                     placeholder="เลือกประเภทหนัง"
-                    onChange={setSelectedGenre}
                 >
                     {genre.map(genre => (
                         <Option key={genre.id} value={genre.id}>

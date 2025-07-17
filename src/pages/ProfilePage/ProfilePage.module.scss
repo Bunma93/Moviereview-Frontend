@@ -1,0 +1,281 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.coverPage_Profile {
+    width: 100%;
+    color: #666666;
+    height: 220px;
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        object-fit: cover;
+        background-color: #666666;
+    }
+}
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile_followed {
+    margin: 100px 80px 0px 80px;
+    // background-color: #463a3b;
+    width: 300px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    div {
+        // background-color: #D9D9D9;
+        font-size: 20px;
+        font-weight: 500;
+        color: #545454;
+    }
+    &_button {
+        color: #ffffff;
+        background-color: #AB0A10;
+        height: 43px;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        padding: 8px 25px;
+        border-radius: 5px;
+        margin-top: 0;
+    }
+}
+
+.profile_info {
+    display: flex;
+    align-items: center;
+    margin: 0px 80px;
+    &_Avatar {
+        border: 8px solid white;
+    }
+    &_name {
+        margin-left: 20px;
+        padding-top: 55px;
+        color: #000000;
+        font-size: 40px;
+        font-weight: 500;
+        div {
+            margin-bottom: -15px;
+        }
+    }
+}
+
+.profile_container {
+    background-color: #D9D9D9;
+    padding: 0px 78px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 25px #333333;
+}
+
+.profile_container_myPlaylist {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 20px;
+    div {
+        font-size: 40px;
+        color: #000000;
+    }
+    button {
+        color: #AB0A10;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        padding: 8px 25px;
+        border-radius: 5px;
+    }
+}
+
+.profile_container_newPlaylist {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+//   background: linear-gradient(135deg, #f5f7fa 0%, #f5f7fa 100%);
+//   border: 1px dashed #AB0A10;
+
+  &_box {
+    border: 2px dashed #7d7d7d;
+    background-color: #e3e3e3;
+    height: 150px;
+    width: 250px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #555;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.plus_icon {
+  font-size: 24px;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+hr {
+    margin: 20px 0px;
+}
+
+// เพลลิสที่สร้าง
+.movieGrid {
+  width: 100%;
+//   overflow: hidden;
+  padding: 15px;
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper-wrapper {
+    display: flex !important;
+  }
+
+  .swiper-slide {
+    width: auto; // หรือระบุค่าชัดเจน เช่น 250px
+    flex-shrink: 0;
+  }
+}
+
+// .movielist {
+//     margin-right: 15px;
+// }
+.profile_container_playList {
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        div {
+            display: flex;
+            div {
+                color:#383838;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            a {
+                color:#CC3333;
+                font-size: 25px;
+                font-weight: 400;
+            }
+        }
+        div {
+            color:black;
+            font-size: 20px;
+        }
+    }
+}
+
+// รีวิว
+.profile_review {
+    // background-color: #f5f5f5;
+    margin: 50px 70px 20px 70px;
+    h1 {
+        color: #000000;
+    }
+    &_container {
+        margin-top: 20px;
+        display: flex;
+        justify-content: start;
+        align-items: start;
+    }
+    &_box {
+        border-radius: 12px;
+        background-color: #000000;
+        width: 409px;
+        height: auto;
+        padding: 40px;
+        margin-right: 20px;
+        &_header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 400;
+            color:white;
+            :nth-child(2) {
+                color: #AB0A10;
+            }
+        }
+        &_massage {
+            color: #999999;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        &_edit {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            a {
+                font-size: 25px;
+                color:#CC3333
+            }
+        }
+    }
+
+}
+
+.playlist_container {
+    // background-color: #AB0A10;
+    width: 100%;
+    overflow-x: hidden;
+    &_header {
+        // background-color: aqua;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        &_edit {
+            display: flex;
+            // background-color: gold;
+        }
+        button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    }
+    &_name {
+        font-size: 25px;
+        color: #383838;
+        margin-right: 20px;
+        text-align: center;
+    }
+}
+
+.redText {
+    color:#AB0A10;
+    font-weight: 500;
+}
+
+.News_SwiperSlide {
+    // background-color: #AB0A10;
+    padding: 15px;
+}

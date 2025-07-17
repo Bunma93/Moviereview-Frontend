@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styles from './movieposter.module.scss'
 
-function Movieposter({moviename, moviepic, moviedate, movieage, movielang = []}) {
+function MoviePoster({moviename, moviepic, moviedate, movieage, movielang = [], className, onClick}) {
     console.log("moviepic:", moviepic);
     console.log("movielang หน้าโปสเตอร์", movielang)
     const imageUrl = moviepic ? `http://localhost:8000/${moviepic}` : "";
@@ -16,7 +16,7 @@ function Movieposter({moviename, moviepic, moviedate, movieage, movielang = []})
 
     const movieLangArray = Array.isArray(movielang) ? movielang : (typeof movielang === "string" ? movielang.split(',') : []);
     return (
-        <div>
+        <div onClick={onClick} className={className}>
             <div className={styles.Movie_List}>
             <img 
                 src={imageUrl} 
@@ -39,4 +39,4 @@ function Movieposter({moviename, moviepic, moviedate, movieage, movielang = []})
     )
 }
 
-export default Movieposter;
+export default MoviePoster;

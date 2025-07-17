@@ -12,10 +12,19 @@ import RegisterForm from "./pages/RegisterForm/RegisterForm"
 import localStorage from "./services/localStorageService";
 // import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from "react-router-dom"; // เพิ่มการนำเข้า useNavigate
+import styles from "./Layout.module.scss";
+import axios from "../src/config/axios";
+import Admin from "../src/pages/Admin/Admin";
+import { Modal } from "antd";
 
 function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpen, isRegisterMode, setIsRegisterMode }) {
 
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState(null);
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const toggleModal = () => {
+    setIsOpenModal(!isOpenModal)
+  }
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -27,6 +36,16 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
     navigate("/");
   };
 
+  const fetchUser = async () => {
+      try {
+        const httpResponse = await axios.get("/user/profile");
+        setUserInfo(httpResponse.data);
+        console.log("ข้อมูล UserInfo", httpResponse.data); // ✅ ดูว่ามี role จริงไหม
+      } catch (error) {
+        console.log("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้", error)
+      }
+  }
+
   useEffect(() => {
     // สมมติว่า access token ถูกเก็บไว้ใน localStorage
     const accessToken = localStorage.getItem('ACCESS_TOKEN');
@@ -34,15 +53,23 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
   
     if (accessToken) {
       setIsLoggedIn(true); // ตั้งค่าเป็น true ถ้ามี access token
+      fetchUser();
       setIsModalOpen(false);
     } else {
       setIsLoggedIn(false); // ตั้งค่าเป็น false ถ้าไม่มี access token
     }
   }, []);
 
+  useEffect(() => {
+  if (isLoggedIn) {
+    fetchUser();
+  }
+}, [isLoggedIn]);
+
   const handleLoginLogoutClick = () => {
     if (isLoggedIn) {
       handleLogout();
+      fetchUser();
     } else {
       openModal();
     }
@@ -55,6 +82,11 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
           <img src="/image/Logo.png" alt="ThaiReview" className="Logo"/>
         </div>
         <nav className="Navbar-link">
+          {userInfo?.role === "admin" && 
+            <button className={styles.adminButton} onClick={toggleModal}>
+              แอดมินฟอร์ม
+            </button>
+          }
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -70,6 +102,18 @@ function Layout({ setRole, isLoggedIn, setIsLoggedIn, isModalOpen, setIsModalOpe
           </li>
         </nav>
       </div>
+      {isOpenModal && 
+        <Modal
+          open={isOpenModal}
+          onCancel={toggleModal}
+          footer={null}
+          width={750} // ✅ กำหนดความกว้างตามต้องการ
+          centered // ✅ ให้อยู่ตรงกลางจอ
+          title="แอดมินฟอร์ม"
+        >
+          <Admin/>
+        </Modal>
+      }
 
       {/* Renders the child route(s) */}
       <Outlet />

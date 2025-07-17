@@ -25,6 +25,8 @@ import image4 from "../../component/images/cf2630c2-1313-47e6-9de0-1131e4c36f45.
 
 function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
     const [movielist, setmovielist] = useState([]);
+    const [newMovieList, setNewMovieList] = useState([]);
+    const [oldMovieList, setOldMovieList] = useState([]);
     const [movieNewsList, setMovieNewsList] = useState([]);
     const [movieRankList, setMovieRankList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,8 +35,20 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
 
     //ดึงข้อมูลหนังทั้งหมด
     const fetchmovielist = async () => {
-        const httpResponse = await axios.get("/movie");
-        setmovielist(httpResponse.data);
+        try {
+            const httpResponse = await axios.get("/movie");
+            const allMovies = httpResponse.data;
+    
+            // แยกหนังใหม่ (Atcinema === 1) และหนังเก่า (Atcinema === 0)
+            const newMovies = allMovies.filter(movie => movie.Atcinema == 1);
+            const oldMovies = allMovies.filter(movie => movie.Atcinema == 0);
+    
+            setmovielist(allMovies);
+            setNewMovieList(newMovies);
+            setOldMovieList(oldMovies);
+        } catch (error) {
+            console.error("เกิดข้อผิดพลาดในการโหลดข้อมูลหนัง:", error);
+        }
     };
 
     const fetchMovieRankList = async () => {
@@ -79,6 +93,7 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
             {/* ปกด้านบน */}
             <div className={styles.carouselContainer}>
                 <img src={backgroundImage} className={styles.coverImage}></img>
+                <div className={styles.movieName}>Test</div>
                 <div className={styles.coverCardSlideContainer}>
                     {!loading && ( 
                         <Swiper
@@ -201,13 +216,16 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
             {/* หนังโรง */}
             <div className={styles.Movie}>
                 <div className={styles.Movie_Header}>กำลังฉายในโรงภาพยนต์</div>
-                <div>ดูเพิ่มเติม&nbsp;&nbsp;
-                    <span>
-                        <FontAwesomeIcon icon={faArrowRight}/>
-                    </span>
-                </div>
+                    <button className={styles.Movie_Button}>
+                        <Link to={`/newmovie`}>
+                        ดูเพิ่มเติม&nbsp;&nbsp;
+                        <span>
+                            <FontAwesomeIcon icon={faArrowRight}/>
+                        </span>
+                        </Link>
+                    </button>
             </div>
-            <Admin/>
+
             <div className={styles.Movie_Container}>
                 {!loading && (
                     <Swiper
@@ -234,7 +252,7 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                         }}
                     >
                         
-                        {movielist.map((list, index) =>{
+                        {newMovieList.map((list, index) =>{
                         let movielangArr = [];
                         try {
                             movielangArr = list.lang ? JSON.parse(list.lang) : [];
@@ -263,13 +281,16 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
             {/* หนังเก่า */}
             <div className={styles.Movie}>
                 <div className={styles.Movie_Header}>หนังเก่านอกโรงภาพยนต์ <span className={styles.emoji}>🎞</span></div>
-                <div>
+                <button className={styles.Movie_Button}>
+                    <Link to={`/oldmovie`}>
                     ดูเพิ่มเติม&nbsp;&nbsp;
                     <span>
                         <FontAwesomeIcon icon={faArrowRight}/>
                     </span>
-                </div>
+                    </Link>
+                </button>
             </div>
+            
             <div className={styles.Movie_Container}>
                 {!loading && (
                     <Swiper
@@ -295,7 +316,7 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                             1900: { slidesPerView: 6, spaceBetween: 30 }, 
                         }}
                     >
-                        {movielist.map((list, index) =>{
+                        {oldMovieList.map((list, index) =>{
                         let movielangArr = [];
                         try {
                             movielangArr = list.lang ? JSON.parse(list.lang) : [];

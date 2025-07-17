@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.coverPage_Profile {
+    width: 100%;
+    color: #666666;
+    height: 150px;
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: 190px;
+        overflow: hidden;
+        object-fit: cover;
+        background-color: #666666;
+    }
+}
+
+.container {
+    background-color: rgb(0, 0, 0);
+    padding: 0px 60px 60px 60px;
+    &_header {
+        margin-bottom: 30px;
+        color: rgb(245, 245, 245);
+        border-left: 4px solid #AB0A10;
+        box-shadow: inset 5px red;
+        padding-left: 15px;
+        font-size: 30px;
+        font-weight: 500;
+        background: linear-gradient(90deg, rgba(171,10,16,0.25) 0%, rgba(0,0,0,0) 40%);
+    }
+    &_movie {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+.movielist {
+    margin-right: 25px;
+    margin-bottom: 25px;
+}

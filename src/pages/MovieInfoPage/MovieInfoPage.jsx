@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styles from "../MovieInfoPage/MovieInfoPage.module.scss"
 import Movieactor from "../../component/movieActor/movieActor";
 import CommentCard from "../../component/Comment/Comment";
+import commentForm from "../../component/commentForm/commentForm";
 import Footer from "../../component/Footer/Footer"
 import _ from "lodash";
 import axios from "../../config/axios";
@@ -31,6 +32,20 @@ function MovieInfoPage() {
     const [fade, setFade] = useState(false);
     const [isOpenTrailer, setIsOpenTrailer] = useState(false);
     const [userInfo,setUserInfo] = useState([]);
+    const displayCount = 5;
+    const [visibleComment, setVisibleComment] = useState(displayCount);
+    const [averageRating, setAverageRating] = useState(0)
+
+    const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && visibleComment < comment.length) {
+        setVisibleComment(prev => prev + displayCount);
+    }
+    };
+
+    useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    }, [visibleComment, comment.length]);
 
     useEffect(() => {
         // ใช้ id เพื่อดึงข้อมูลของหนังจาก API หรือฐานข้อมูล
@@ -45,7 +60,6 @@ function MovieInfoPage() {
                 const actors = data.Actors.filter(actor => actor.role === 'actor');
                 setActors(actors);
                 setDirector(director);
-                console.log("ผู้กับกำหนัง",director)
 
             if (data.backgroundimagePath) {
                 const images = JSON.parse(data.backgroundimagePath).map(path => 
@@ -83,12 +97,28 @@ function MovieInfoPage() {
                     MovieId: movie.id  // ส่ง MovieId ที่ต้องการ
                 }
             });
-            setComment(httpResponse.data);
-            console.log(httpResponse.data);
+             const allComments = httpResponse.data;
+            setComment(allComments);
+
+            const averageRating = allComments.length
+            ? (
+                allComments.reduce((sum, c) => sum + (c.ratingScore || 0), 0) /
+                allComments.length
+                ).toFixed(1)
+            : 0;
+            console.log("Average Rating:", averageRating);
+            setAverageRating(averageRating)
+
         } catch (error) {
             console.error("Error fetching comments:", error);
         }
     };
+    
+    let fetchUser = async () =>{
+        const httpResponse = await axios.get('user/profile');
+        setUserInfo(httpResponse.data);
+        console.log(httpResponse.data);
+    }
 
     useEffect(() => {
         if (movie.id) { 
@@ -111,11 +141,6 @@ function MovieInfoPage() {
         }
     }, [imageArray]);
 
-    let fetchUser = async () =>{
-        const httpResponse = await axios.get('user/profile');
-        setUserInfo(httpResponse.data);
-        console.log(httpResponse.data);
-    }
 
     const imageUrl = `http://localhost:8000/${userInfo.userimagePath}`;
 
@@ -132,43 +157,43 @@ function MovieInfoPage() {
         setIsOpenTrailer(false); 
     };
 
-    
-  const handleSubmit = async (values) => {
-    try {
-      // ส่งข้อมูลคอมเม้นท์ไปยัง API
-      const response = await axios.post('/comment/addcomment', {
-        MovieId: movie.id, // ระบุ movieId ที่ต้องการคอมเม้นท์
-        commentText: values.commentText,
-        ratingScore: rating,
-      }, );
-      
-      if (response.status === 200|| response.status === 201) {
-        message.success('คอมเม้นท์สำเร็จ');
-        setCommentText('');
-        setRating(0); // รีเซ็ตฟอร์ม
-        fetchComment();
-      } else {
-        message.error(response.data.message); 
-    }
-    } catch (error) {
-        if (error.response) {
-            message.error(error.response.data.message || 'เกิดข้อผิดพลาดในการเพิ่มคอมเม้นท์');
+    const handleSubmit = async (values) => {
+        try {
+        // ส่งข้อมูลคอมเม้นท์ไปยัง API
+        const response = await axios.post('/comment/addcomment', {
+            MovieId: movie.id, // ระบุ movieId ที่ต้องการคอมเม้นท์
+            commentText: values.commentText,
+            ratingScore: rating,
+        }, );
+        
+        if (response.status === 200|| response.status === 201) {
+            message.success('คอมเม้นท์สำเร็จ');
+            setCommentText('');
+            setRating(0); // รีเซ็ตฟอร์ม
+            fetchComment();
         } else {
-            message.error('เกิดข้อผิดพลาด โปรดลองอีกครั้ง');
+            message.error(response.data.message); 
         }
-        console.error('Error adding comment: ', error);
-    }
-};
+        } catch (error) {
+            if (error.response) {
+                message.error(error.response.data.message || 'เกิดข้อผิดพลาดในการเพิ่มคอมเม้นท์');
+            } else {
+                message.error('เกิดข้อผิดพลาด โปรดลองอีกครั้ง');
+            }
+            console.error('Error adding comment: ', error);
+        }
+    };
 
-   const deletePlaylist = async (id) => {
-        console.log(id);
+   const handleDeleteComment = async (id)=> {
+    try {
         await axios.delete(`/comment/${id}`);
+        message.success("ลบคอมเม้นสำเร็จ");
         fetchComment();
-        // const newPlaylist = [...playlist];
-        // const targetIndex = newPlaylist.findIndex(playlist => playlist.id === id);
-        // newPlaylist.splice(targetIndex, 1);
-        // setPlaylist(newPlaylist);
-   };
+    } catch (error) {
+      console.error("เกิดปัญหาในการลบ:", error);
+      message.error("ไม่สามารถลบคอมเม้นได้");
+    }
+  }
 
    let safeDescription = DOMPurify.sanitize(movie.description);
 
@@ -309,10 +334,10 @@ function MovieInfoPage() {
                                         rules={[{ required: true, message: 'กรุณาเลือกคะแนน' }]}
                                     >
                                         <Rate
-                                        className={styles.Rate}
-                                        allowHalf
-                                        value={rating}
-                                        onChange={(value) => setRating(value)}
+                                            className={styles.Rate}
+                                            allowHalf
+                                            value={rating}
+                                            onChange={(value) => setRating(value)}
                                         />
                                     </Form.Item>
                                 </div>
@@ -334,7 +359,7 @@ function MovieInfoPage() {
 
                                 <Form.Item>
                                     <Button className={styles.popup_submit}type="primary" htmlType="submit">
-                                    ส่งคอมเม้นท์
+                                        ส่งคอมเม้นท์
                                     </Button>
                                 </Form.Item>
                             </Form>
@@ -343,21 +368,24 @@ function MovieInfoPage() {
                     )}
                     <div className={styles.movieinfo_review_box}>
                         <div>
-                        {comment.map((list => {
+                        {comment.slice(0, visibleComment).map((list => {
                             const userImageUrl = list.User?.userimagePath 
                             ? `http://localhost:8000/${list.User.userimagePath}` 
                             : "https://example.com/default-avatar.jpg"; // ใช้รูปดีฟอลต์ถ้าไม่มีรูป
 
                             return (
-                            <CommentCard 
-                                avatar={userImageUrl|| "https://example.com/avatar.jpg"}
-                                name={list.User?.name || "ไม่ระบุชื่อ"} // ใช้ list.User.name แทน username
-                                date="25/09/67" 
-                                time="13.30" 
-                                commentText={list.commentText}
-                                rating={list.ratingScore}
-                                key={list.id}
-                            />
+                            <div key={list.id} className={styles.comment_container}>
+                               <CommentCard 
+                                    avatar={userImageUrl}
+                                    name={list.User?.name || "ไม่ระบุชื่อ"}
+                                    date={list.commentDate}
+                                    commentText={list.commentText}
+                                    rating={list.ratingScore}
+                                    userInfo={userInfo}
+                                    commentId={list.id}
+                                    handleDeleteComment={handleDeleteComment}
+                                />
+                            </div>
                             )}
                         ))}
                         </div>
@@ -401,11 +429,11 @@ function MovieInfoPage() {
                                     <div className={styles.star_background}>
                                         {'★'.repeat(5)} {/* ดาวเงาที่เป็นพื้นหลัง */}
                                     </div>
-                                    <div className={styles.star_foreground} style={{ width: `${(rating / 5) * 100}%` }}>
+                                    <div className={styles.star_foreground} style={{ width: `${(averageRating  / 5) * 100}%` }}>
                                         {'★'.repeat(5)} {/* ดาวเต็มที่จะปรากฏตามคะแนน */}
                                     </div>
                                 </div>
-                                <span className={styles.rating}>{rating}</span>
+                                <span className={styles.rating}>{averageRating}</span>
                             </div>
                         </div>
                     </div>
@@ -416,8 +444,12 @@ function MovieInfoPage() {
                             </div>
                             <span>ประเภทหนัง</span>
                         </div>
-                        <div className={styles.movieinfo_data_box}>
-                            <div>โรแมนติก</div>
+                        <div className={styles.movieinfo_data_genre}>
+                            {movie.Genres && movie.Genres.map((genre => (
+                                <div className={styles.movieinfo_data_box} key={genre.id}>
+                                    <div>{genre.genreName}</div>
+                                </div>
+                            )))}
                         </div>
                     </div>
                     <div className={styles.movieinfo_data_container}>

@@ -1,0 +1,92 @@
+.profile_review_box {
+    background-color: #0F0F0F;
+    border: #262626;
+    width: 410px;
+    padding: 30px 40px;
+    border-radius: 12px;
+    margin-right: 20px;
+    &_header {
+        display: flex;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        &_name {
+            font-size: 20px;
+            color: #FFF;
+        }
+    }
+    &_date {
+        color: #c0c0c0;
+        font-weight: 300;
+        font-size: 15px;
+        margin-bottom: 24.5px;
+    }
+    &_edit {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+.editButton {
+    color: #CC3333;
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.profile_review_box_massage {
+    color: #999;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.comment_rating {
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+  
+.stars {
+    color: red;
+    margin-right: 5px;
+}
+  
+.rating {
+    font-size: 18px;
+    color: #999;
+    margin-bottom: 7px;
+    margin: 0;
+}
+
+.star_border {
+    border: 1px solid #262626;
+    background-color: #141414;
+    padding: 2px 10px;
+    border-radius: 51px;
+    min-width: 145px;
+}
+
+.star_rating {
+    position: relative;
+    display: inline-block;
+    font-size: 24px; /* ขนาดของดาว */
+    color: #ccc; /* สีของดาวเงา */
+    margin-right: 5px;
+  }
+  
+.star_background {
+    position: relative;
+    z-index: 1;
+    color: #ccc; /* สีของดาวที่เป็นเงา */
+}
+
+.star_foreground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 2;
+    color: red; /* สีของดาวที่เต็ม */
+  }

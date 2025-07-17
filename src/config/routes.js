@@ -3,6 +3,8 @@ import MovieInfoPage from "../pages/MovieInfoPage/MovieInfoPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import RegisterForm from "../pages/RegisterForm/RegisterForm";
 import Login from "../pages/Login/Login";
+import NewMovie from "../pages/NewMovie/NewMovie";
+import OldMovie from "../pages/OldMovie/OldMovie";
 
 const components = {
     homepage: {
@@ -25,6 +27,14 @@ const components = {
         url: "/login",
         component: Login
     },
+    newmovie : {
+        url: "/newmovie",
+        component: NewMovie
+    },
+    oldmovie : {
+        url: "/oldmovie",
+        component: OldMovie
+    }
 }
 
 //Role ไหนเข้าหน้าไหนได้บ้าง
@@ -42,6 +52,8 @@ export default {
         components.homepage,
         components.profile, // หน้าโปรไฟล์
         components.movieinfo, // หน้าข้อมูลภาพยนตร์
+        components.newmovie,
+        components.oldmovie
       ],
       redirectRoutes: "/", // หากเส้นทางไม่ตรงจะ Redirect มาหน้านี้
     },

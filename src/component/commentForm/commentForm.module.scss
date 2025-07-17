@@ -1,0 +1,78 @@
+.popup_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังมืด */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.popup_content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 0.5px solid #AB0A10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 30%; /* กำหนดขนาดหน้าต่าง */
+    position: relative;
+}
+
+.popup_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    // background-color: #AB0A10;
+}
+
+.popup_submit {
+    position: relative;
+    left: 75%;
+    background-color: #AB0A10;
+}
+
+.popup_submit:hover {
+    position: relative;
+    left: 75%;
+    background-color: #ff6262 !important;
+}
+
+.popup_info {
+    display: flex;
+    align-items: center;
+    // background-color: green;
+    justify-content: space-between;
+    height: 40px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.popup_user {
+    display: flex;
+    align-items: center;
+}
+
+.Avatar {
+    margin-right: 10px;
+}
+
+.Name {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.Rate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: #AB0A10;
+    height: 50px;
+    margin-top: 10px;
+}
+
+.custom_textarea:focus, .custom_textarea:hover {
+    border-color: #ff4d4f !important; /* เปลี่ยนสีขอบเป็นสีแดง */
+    box-shadow: 0 0 2px rgba(255, 77, 79, 0.5); /* เพิ่มเงา */
+}

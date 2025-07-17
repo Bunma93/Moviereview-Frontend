@@ -1,6 +1,7 @@
 import React from "react";
+import MoviePoster from '../../component/movieposter/movieposter';
 
-function Playlist({headerName}) {
+function Playlist({headerName, moviename, moviepic, movieage, movielang}) {
     return (
         <div>
             <div className="profile-container-playList">
@@ -12,9 +13,12 @@ function Playlist({headerName}) {
                     <div>+</div>
                 </div>
                 <div>
-                    <div>
-                        <img src="#"/>
-                    </div>
+                   <MoviePoster 
+                        moviename={moviename} 
+                        moviepic={moviepic}
+                        movieage={movieage}
+                        movielang={movielang}
+                    />
                 </div>
                 <hr/>
             </div>
