@@ -83,6 +83,17 @@ function ProfilePage() {
         }
     }
 
+    const handleDeleteComment = async (id) => {
+         try {
+            await axios.delete(`/comment/${id}`);
+            message.success("ลบคอมเม้นสำเร็จ");
+            fetchMyComment();
+        } catch (error) {
+            console.error("เกิดปัญหาในการลบ:", error);
+            message.error("ไม่สามารถลบคอมเม้นได้");
+        }
+  }
+
     const imageUrl = `http://localhost:8000/${userProfile.userimagePath}`;
     const imageUrl_Backgroud = `http://localhost:8000/${userProfile.userBackgroundImagePath}`;
     
@@ -246,12 +257,14 @@ function ProfilePage() {
                                 rules={[{ required: true, message: 'กรุณาใส่คอมเม้น' }]}
                             >
                                 <Input.TextArea
+                                    className={styles.custom_textarea}
                                     value={selectedReview.commentText}
                                     rows={4}
                                     onChange={(e) => setCommentText(e.target.value)}
                                     placeholder="กรุณากรอกข้อความของคุณ"
                                 />
                             </Form.Item>
+
                             <Form.Item>
                                 <Popconfirm
                                     title="คุณแน่ใจหรือไม่ว่าต้องการแก้ไขรีวิวนี้?"
@@ -259,7 +272,7 @@ function ProfilePage() {
                                     okText="ใช่"
                                     cancelText="ยกเลิก"
                                 >
-                                    <Button type="primary">
+                                    <Button className={styles.popup_submit} type="primary">
                                         แก้ไขรีวิว
                                     </Button>
                                 </Popconfirm>
@@ -275,6 +288,7 @@ function ProfilePage() {
                             commentText={list.commentText} 
                             commentDate={list.commentDate}
                             onEdit={()=> handleEditReview(list)}
+                            handleDelete={()=> handleDeleteComment(list.id)}
                         />
                     ))}
                 </div>

@@ -120,11 +120,14 @@
     a {
         flex-grow: 0;
         flex-shrink: 0;
-        margin-right: 50px;
+        padding: 0px 50px;
         flex-basis: auto;
         text-align: center;
         // background-color: aqua;
         font-size: 18px;
+    }
+    :first-child {
+        margin-bottom: 7px;
     }
 }
 

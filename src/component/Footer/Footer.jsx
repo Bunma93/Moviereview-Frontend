@@ -46,17 +46,19 @@ function Footer() {
                     </div>
                 </div>
                 <div className={styles.followLink}>
-                    <a href="#">Help</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Advertising</a>
-                    <a href="#">Cookie Notices</a>
-                    <a href="#">Condition of Use</a>
-                    <a href="#">Box office</a>
-                    <a href="#">Jobs</a>
-                    <a href="#">Jobs</a>
-                    <a href="#">Jobs</a>
-                    <a href="#">Jobs</a>
-                    <a href="#">Jobs</a>
+                    <div>
+                        <a href="#">Help</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Advertising</a>
+                        <a href="#">Cookie Notices</a>
+                    </div>
+                    <div>
+                        <a href="#">Condition of Use</a>
+                        <a href="#">Box office</a>
+                        <a href="#">License Thaireview Data</a>
+                        <a href="#">Site index</a>
+                        <a href="#">Jobs</a>
+                    </div>
                 </div>
             </div>
             <div>

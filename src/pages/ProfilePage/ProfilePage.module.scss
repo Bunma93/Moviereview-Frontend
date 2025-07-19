@@ -279,3 +279,20 @@ hr {
     // background-color: #AB0A10;
     padding: 15px;
 }
+
+.popup_submit {
+    position: relative;
+    left: 80%;
+    background-color: #AB0A10;
+}
+
+.popup_submit:hover {
+    position: relative;
+    left: 80%;
+    background-color: #ff6262 !important;
+}
+
+.custom_textarea:focus, .custom_textarea:hover {
+    border-color: #ff4d4f !important; /* เปลี่ยนสีขอบเป็นสีแดง */
+    box-shadow: 0 0 2px rgba(255, 77, 79, 0.5); /* เพิ่มเงา */
+}

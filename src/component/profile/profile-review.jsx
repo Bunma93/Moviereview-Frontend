@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../profile/profile-review.module.scss";
+import { Popconfirm } from 'antd';
 
 function formatThaiDate(dateString) {
     const months = [
@@ -15,7 +16,7 @@ function formatThaiDate(dateString) {
     return `${day} ${month} ${year} - ${hours}:${minutes} น.`;
 }
 
-function Review({name, ratingScore, commentText, commentDate, onEdit}) {
+function Review({name, ratingScore, commentText, commentDate, onEdit, handleDelete}) {
     return (
         <div>
             <div className={styles.profile_review_box}>
@@ -43,6 +44,14 @@ function Review({name, ratingScore, commentText, commentDate, onEdit}) {
                 </div>
                 <div className={styles.profile_review_box_edit}>
                     <button className={styles.editButton} onClick={onEdit}>แก้ไข</button>
+                    <Popconfirm
+                        title="คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้?"
+                        onConfirm={handleDelete}
+                        okText="ใช่"
+                        cancelText="ยกเลิก"
+                    >
+                        <button className={styles.deleteButton}>ลบ</button>
+                    </Popconfirm>
                 </div>
             </div>
         </div>
