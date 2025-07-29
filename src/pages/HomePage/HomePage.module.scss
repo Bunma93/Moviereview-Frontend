@@ -46,9 +46,48 @@
 }
 
 .movieName {
-    color: white;
-    font-size: larger;
-    z-index: 1;
+    position: absolute;
+    top: 150px;
+    color: rgb(255, 255, 255);
+    font-size: 40px;
+    z-index: 333;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    width: 95%;
+    padding: 0px 60px 0px 70px;
+    &_title {
+        text-shadow: 0 0 5px rgb(23, 23, 23);
+        font-size: 50px;
+        font-weight: 600;
+    }
+    &_EngTitle {
+        margin-top: -10px;
+        font-size: 25px;
+        font-weight: 400;
+    }
+    &_Date {
+        margin-top: 30px;
+        font-size: 20px;
+        color: #8b8b8b;
+        // text-shadow: 0 0 5px rgb(23, 23, 23);
+    }
+    &_Rating {
+        position: relative;
+        color: #ffffff;
+        text-shadow: 0 0 5px rgb(23, 23, 23);
+        top: 10px;
+        font-size: 30px;
+        text-align: center;
+        &_Score{
+            color: #fc363c;
+            font-size: 40px;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgb(102, 14, 5);
+        }
+    }
+    
+    // background-color: #0aab22;
 }
 
 .coverCardSlideContainer {
@@ -415,4 +454,29 @@
         background-color: aquamarine;
         overflow: hidden;
     }
+}
+
+.marqueeContainer {
+  width: 100%;
+  overflow: hidden;
+  background-color: black;
+  color: white;
+  padding: 10px 0;
+}
+
+.marqueeText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 12s linear infinite;
+  font-size: 18px;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }

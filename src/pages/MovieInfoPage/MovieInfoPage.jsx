@@ -15,6 +15,7 @@ import { Navigation, Scrollbar, A11y, Autoplay } from 'swiper/modules';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/autoplay'
+import { AnimatePresence, motion } from "motion/react"
 
 function MovieInfoPage() {
     const { id } = useParams();
@@ -238,7 +239,17 @@ function MovieInfoPage() {
             <div className={styles.coverImage}>
                 {imageArray.length > 0 && (
                     <div className={`fade-image ${fade ? "fade-out" : "fade-in"}`}>
-                        <img src={imageArray[currentImageIndex]} alt={movie.title} />
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentImageIndex}
+                                initial={{ opacity: 0.5 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                <img src={imageArray[currentImageIndex]} alt={movie.title} />
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 )}
             </div>
@@ -254,30 +265,56 @@ function MovieInfoPage() {
                     <button className={styles.btn_watchNow}><i className="fa-solid fa-play"></i>Watch now</button>
                 </div>
             </div>
-            {isOpenTrailer && (
-                <div className={styles.modal_overlay} onClick={toggleModal}>
-                    <div className={styles.modal_content} onClick={e => e.stopPropagation()}>
-                        <button className={styles.close_btn} onClick={toggleModal}>X</button>
-                        <iframe 
-                            width="100%" 
-                            height="400px" 
-                            src={movie.trailerUrl} 
-                            title="YouTube Trailer"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-                </div>
-            )}
+             <AnimatePresence>
+                {isOpenTrailer && (
+                    <motion.div
+                                key="popup"
+                                className={styles.popup_motion_wrapper}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1}}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                    >
+                        <div className={styles.modal_overlay} onClick={toggleModal}>
+                            <div className={styles.modal_content} onClick={e => e.stopPropagation()}>
+                                <button className={styles.close_btn} onClick={toggleModal}>X</button>
+                                <iframe 
+                                    width="100%" 
+                                    height="400px" 
+                                    src={movie.trailerUrl} 
+                                    title="YouTube Trailer"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div>
-                <div className={styles.movieinfo_story}>
-                    <div className={styles.movieinfo_story_header}>เรื่องย่อ</div>
-                    <div className={styles.movieinfo_story_detail} dangerouslySetInnerHTML={{ __html: safeDescription }}></div>
-                </div>
+                <motion.div
+                    className={styles.followed_list}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 2 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                >
+                    <div className={styles.movieinfo_story}>
+                        <div className={styles.movieinfo_story_header}>เรื่องย่อ</div>
+                        <div className={styles.movieinfo_story_detail} dangerouslySetInnerHTML={{ __html: safeDescription }}></div>
+                    </div>
+                </motion.div>
             </div>
 
             <section className={styles.movieinfo_actor}>
+                <motion.div
+                    className={styles.followed_list}
+                    initial={{ opacity: 0, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                >
                 <div className={styles.movieinfo_actor_header}>นักแสดงนำ</div>
                 <div className={styles.movieinfo_actor_pic}>
                     <Swiper
@@ -309,6 +346,7 @@ function MovieInfoPage() {
                         )}
                     </Swiper>
                 </div>
+                </motion.div>
             </section>
             
             <section className={styles.movieinfo_container}>
@@ -317,55 +355,66 @@ function MovieInfoPage() {
                         <h1>Reviews</h1>
                         <button onClick={togglePopup}>+ Add Your Review</button>
                     </div>
+                    <AnimatePresence>
                     {isOpen && (
-                    <div className={styles.popup_overlay} onClick={togglePopup}>
-                        <div className={styles.popup_content} onClick={e => e.stopPropagation()}>
-                        <Form className={styles.popup_form} onFinish={handleSubmit} layout="vertical">
-                            <div className={styles.popup_info}>
-                                <div className={styles.popup_user}>
-                                    <Avatar className={styles.Avatar} size={45} icon={<UserOutlined />} src={imageUrl}/>
-                                    <div className={styles.Name}>{userInfo.name}</div>
-                                </div>
-                                <div>
-                                    <Form.Item
-                                        // label="ให้คะแนน"
-                                        className={styles.Rate}
-                                        name="ratingScore"
-                                        rules={[{ required: true, message: 'กรุณาเลือกคะแนน' }]}
-                                    >
-                                        <Rate
-                                            className={styles.Rate}
-                                            allowHalf
-                                            value={rating}
-                                            onChange={(value) => setRating(value)}
-                                        />
-                                    </Form.Item>
+                        <motion.div
+                            key="popup"
+                            className={styles.popup_motion_wrapper}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1}}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <div className={styles.popup_overlay} onClick={togglePopup}>
+                                <div className={styles.popup_content} onClick={e => e.stopPropagation()}>
+                                <Form className={styles.popup_form} onFinish={handleSubmit} layout="vertical">
+                                    <div className={styles.popup_info}>
+                                        <div className={styles.popup_user}>
+                                            <Avatar className={styles.Avatar} size={45} icon={<UserOutlined />} src={imageUrl}/>
+                                            <div className={styles.Name}>{userInfo.name}</div>
+                                        </div>
+                                        <div>
+                                            <Form.Item
+                                                // label="ให้คะแนน"
+                                                className={styles.Rate}
+                                                name="ratingScore"
+                                                rules={[{ required: true, message: 'กรุณาเลือกคะแนน' }]}
+                                            >
+                                                <Rate
+                                                    className={styles.Rate}
+                                                    allowHalf
+                                                    value={rating}
+                                                    onChange={(value) => setRating(value)}
+                                                />
+                                            </Form.Item>
+                                        </div>
+                                    </div>
+                                        <Form.Item
+                                            label="คอมเม้นท์/รีวิว"
+                                            name="commentText"
+                                            rules={[{ required: true, message: 'กรุณากรอกรีวิว' }]}
+                                            className={styles.comment}
+                                        >
+                                            <Input.TextArea
+                                            className={styles.custom_textarea}
+                                            value={commentText}
+                                            onChange={(e) => setCommentText(e.target.value)}
+                                            rows={4}
+                                            placeholder="เขียนความคิดเห็นของคุณ"
+                                            />
+                                        </Form.Item>
+
+                                        <Form.Item>
+                                            <Button className={styles.popup_submit}type="primary" htmlType="submit">
+                                                ส่งคอมเม้นท์
+                                            </Button>
+                                        </Form.Item>
+                                    </Form>
                                 </div>
                             </div>
-                                <Form.Item
-                                    label="คอมเม้นท์/รีวิว"
-                                    name="commentText"
-                                    rules={[{ required: true, message: 'กรุณากรอกรีวิว' }]}
-                                    className={styles.comment}
-                                >
-                                    <Input.TextArea
-                                    className={styles.custom_textarea}
-                                    value={commentText}
-                                    onChange={(e) => setCommentText(e.target.value)}
-                                    rows={4}
-                                    placeholder="เขียนความคิดเห็นของคุณ"
-                                    />
-                                </Form.Item>
-
-                                <Form.Item>
-                                    <Button className={styles.popup_submit}type="primary" htmlType="submit">
-                                        ส่งคอมเม้นท์
-                                    </Button>
-                                </Form.Item>
-                            </Form>
-                        </div>
-                    </div>
+                        </motion.div>
                     )}
+                    </AnimatePresence>
                     <div className={styles.movieinfo_review_box}>
                         <div>
                         {comment.slice(0, visibleComment).map((list => {

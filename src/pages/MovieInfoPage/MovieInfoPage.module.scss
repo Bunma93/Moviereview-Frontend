@@ -335,6 +335,15 @@ color: red; /* สีของดาวที่เต็ม */
 }
 
 //ลองทำ
+.popup_motion_wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999; // สูงกว่าทุกอย่าง
+}
+
 .popup_overlay {
     position: fixed;
     top: 0;

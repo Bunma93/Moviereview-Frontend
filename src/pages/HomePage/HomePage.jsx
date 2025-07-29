@@ -22,6 +22,20 @@ import image from "../../component/images/w644.jpg"
 import image2 from "../../component/images/s_gettyimages-2202908378.jpg"
 import image3 from "../../component/images/pngegg.png"
 import image4 from "../../component/images/cf2630c2-1313-47e6-9de0-1131e4c36f45.jpg"
+import { motion } from "motion/react";
+
+function formatThaiDate(dateString) {
+  const months = [
+    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+  ];
+
+  const [year, month, day] = dateString.split("-");
+  const thaiYear = parseInt(year) + 543;
+  const thaiMonth = months[parseInt(month, 10) - 1];
+
+  return `${parseInt(day, 10)} ${thaiMonth} ${thaiYear}`;
+}
 
 function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
     const [movielist, setmovielist] = useState([]);
@@ -32,6 +46,11 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
     const [loading, setLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState(0);
     const [backgroundImage, setBackgroundImage] = useState("");
+    const [movieName, setMovieName] = useState("");
+    const [movieRating, setMovieRating] = useState(0);
+    const [reviewCount, setReviewCount] = useState(0);
+    const [movieEngName, setMovieEngName] = useState("");
+    const [movieDate, setMovieDate] = useState("")
 
     //ดึงข้อมูลหนังทั้งหมด
     const fetchmovielist = async () => {
@@ -82,10 +101,21 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
     const handleSlideChange = ({ realIndex }) => {
         setActiveIndex(realIndex);
         const selectedMovie = movieRankList[realIndex];
-        console.log(selectedMovie);
+        if (!selectedMovie || !selectedMovie.backgroundimagePath) {
+        console.warn("Movie หรือ backgroundimagePath หาย:", selectedMovie);
+        return;
+    }
+        console.log("หนังที่เลือก",selectedMovie);
         const backgroundImageArray = JSON.parse(selectedMovie.backgroundimagePath); // แปลงเป็น array
         const imageUrl = `http://localhost:8000/${backgroundImageArray[0]}`; // ดึงรูปแรกจาก array
         setBackgroundImage(imageUrl);
+
+        const movieName = selectedMovie.title;
+        setMovieName(movieName);
+        setMovieRating(Number(selectedMovie.averageRating?.toFixed(1)) || 0);
+        setReviewCount(selectedMovie.reviewCount);
+        setMovieEngName(selectedMovie.engTitle);
+        setMovieDate(formatThaiDate(selectedMovie.date));
     };
 
     return (
@@ -93,7 +123,21 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
             {/* ปกด้านบน */}
             <div className={styles.carouselContainer}>
                 <img src={backgroundImage} className={styles.coverImage}></img>
-                <div className={styles.movieName}>Test</div>
+                <div className={styles.movieName}>
+                    <div>
+                        <p className={styles.movieName_title}>{movieName}</p>
+                        <p className={styles.movieName_EngTitle}>{movieEngName}</p>
+                        <p className={styles.movieName_Date}>{movieDate}</p>
+                    </div>
+                    <p className={styles.movieName_Rating}> คะแนนรีวิว : <span className={styles.movieName_Rating_Score}>{movieRating}</span> ({reviewCount})</p>
+                </div>
+                <motion.div
+                        // className={styles.followed_list}
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.5 }}
+                        viewport={{ once: true, amount: 1 }}
+                >
                 <div className={styles.coverCardSlideContainer}>
                     {!loading && ( 
                         <Swiper
@@ -160,10 +204,16 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                     })}
                         </Swiper>
                 )}
-              </div>
+                </div>
+                </motion.div>
             </div>
 
             {/* ข่าว */}
+            <div className={styles.marqueeContainer}>
+                <div className={styles.marqueeText}>
+                    📢 พบกับรีวิวหนังใหม่ทุกวัน! 🎬 อัปเดตข่าวหนัง คะแนนรีวิว และอีกมากมายที่ THAIReview!
+                </div>
+            </div>
            <section className={styles.News}>
                 <div className={styles.News_Container1}>
                     <div className={styles.News_Header}>ข่าวประจำวัน</div>
@@ -176,6 +226,10 @@ function HomePage({isLoggedIn, setIsModalOpen, setIsLoggedIn}) {
                             slidesPerView={1}
                             navigation
                             loop={true}
+                            autoplay={{ 
+                                delay: 3000, // หน่วงเวลา (3 วินาที)
+                                disableOnInteraction: false, // ให้เลื่อนต่อ แม้มีการโต้ตอบ
+                            }}
                             // breakpoints={{
                             //     320: { slidesPerView: 1, spaceBetween: 10 },  // หน้าจอเล็ก (มือถือ)
                             //     768: { slidesPerView: 2, spaceBetween: 15 },  // Tablet
