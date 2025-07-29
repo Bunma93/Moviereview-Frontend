@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+## 🎬 ThaiReview - ระบบรีวิวภาพยนตร์ (Fullstack)
+เว็บแอปสำหรับรีวิวหนัง ดูคะแนนผู้ชม ข่าวหนัง และให้ผู้ใช้แสดงความเห็น
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📦 โครงสร้างระบบ
 
-## Available Scripts
+- **Frontend**: React (Vite/CRA) - [👉 GitHub Link](https://github.com/Bunma93/Moviereview-Frontend)
+- **Backend**: Node.js + Express + Sequelize - [👉 GitHub Link](https://github.com/Bunma93/Moviereview-Backend)
+- **Database**: MySQL
+- **ภาพรวม**: เชื่อมต่อผ่าน REST API และใช้งานแบบแยกฝั่ง
+  
+### 🔐 ระบบแอดมิน
 
-In the project directory, you can run:
+เว็บไซต์มีฟอร์มสำหรับ **แอดมิน** เพื่อแก้ไขข้อมูล:
+- แก้ไขข้อมูลหนัง / นักแสดง / ข่าว
+- ลบความคิดเห็นใดๆ ก็ได้
 
-### `npm start`
+**เข้าสู่ระบบแอดมิน:**
+- Username: `Admin`
+- Password: `Jamesbunma722544`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🚀 การรัน Back-End
 
-### `npm test`
+1. Clone โปรเจกต์:
+```bash
+git clone https://github.com/Bunma93/Moviereview-Backend.git
+cd Moviereview-Backend
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. ติดตั้ง dependencies:
+```bash
+npm install
+```
 
-### `npm run build`
+3.รันเซิร์ฟเวอร์:
+```bash
+nodemon index.js
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Server จะรันที่ http://localhost:8000
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 📥 ติดตั้งฐานข้อมูล
+1. ติดตั้ง **MySQL** และเปิดใช้งาน
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. สร้างฐานข้อมูล `movie_review` ด้วยคำสั่ง:
+```sql
+CREATE DATABASE movie_review;
+```
 
-### `npm run eject`
+3. นำเข้าไฟล์ SQL (movie_review.sql) ด้วย MySQL Workbench:
+ไปที่ File > Open SQL Script
+เลือกไฟล์ movie_review.sql
+เลือกฐานข้อมูล movie_review ที่ด้านซ้าย (คลิกขวา > Set as Default Schema)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+กดปุ่ม ⚡️ Execute All (หรือ Ctrl + Shift + Enter)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🚀 การรัน Front-end
+1. Clone โปรเจกต์:
+```bash
+git clone https://github.com/Bunma93/Moviereview-Frontend.git
+cd Moviereview-Frontend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. ติดตั้ง dependencies:
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3.รันแอป:
+```bash
+npm start
+```
 
-## Learn More
+Frontend จะรันที่ http://localhost:3000
+และเชื่อมต่อกับ API ที่ http://localhost:8000
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+🙌 ติดต่อผู้พัฒนา
+Bpatipongsakorn Bunma
+📧 bpatipongsakorn.bun@gmail.com
